@@ -4,7 +4,7 @@ import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
 import ButtonGroup from 'react-bootstrap/ButtonGroup';
 import Alert from 'react-bootstrap/Alert';
-import { Title, imgOption, optionGroup } from './QuickGuide';
+import { Title, imgOption, optionGroup, ShowMap } from './QuickGuide';
 import "./QuickGuide.css";
 
 import puppy from "./img/QGdog/puppy.jpg";
@@ -144,13 +144,12 @@ class Result extends React.Component {
     }
 }
 
-class Map extends React.Component {
+class Map extends React.Component { 
     render() {
-        if (this.props.activeSection === "result" && (this.props.result===unwellResult_dog || this.props.result===unableToDetermine_dog||this.props.result===healthyNewbornResult_dog)) {
+        if (this.props.activeSection === "result" && this.props.result!=={healthyNewbornResult_dog} && this.props.result!=={healthyAdultResult_dog}) {
             return (
-                //<div align="center"><iframe src="https://maps.googleapis.com/maps/api/js?key=YOUR_API_KEY&region=JP&language=ja&callback=initMap"><a href="https://www.maps.ie/distance-area-calculator.html">distance maps</a></iframe></div>
-                <div align="center"><iframe src="https://www.google.com/maps/embed?pb=!1m16!1m12!1m3!1d14461.340873575753!2d121.53524947935185!3d25.022690417760334!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!2m1!1z54246Yar!5e0!3m2!1szh-TW!2stw!4v1685614250038!5m2!1szh-TW!2stw"></iframe></div>
-            )
+                <ShowMap/>
+            );
         } else {
             return null;
         }
