@@ -56,26 +56,11 @@ function QGBird(){
     return(
         <div>
             {Title(Pigeon, "pigeons", "傷救指引：鳥")}
-            {/* {getLocation} */}
             <Bird/>
         </div>
     );
 }
 export default QGBird;
-
-// function showPosition(position) {
-//     return( 
-//         <p>Latitude: {position.coords.latitude}Longitude: {position.coords.longitude}</p>
-//     );
-// }
-// function getLocation() {
-//     if (navigator.geolocation) {
-//       navigator.geolocation.getCurrentPosition(showPosition);
-//     } else { 
-//       return(<p>Geolocation is not supported by this browser.</p>);
-//     }
-// }  
-
 
 class SelectAge extends React.Component {
     render() {
