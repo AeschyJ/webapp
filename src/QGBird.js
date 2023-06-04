@@ -171,9 +171,9 @@ class Map extends React.Component {
     render() {
         if (this.props.activeSection === "result") {
             return (
-                <>
+                <div align="center">
                     <iframe width="300" height="170" src="https://maps.google.com/maps?q=獸醫+桃園&hl=zh-TW&z=12&amp;output=embed"></iframe>
-                </>
+                </div>
             );
         } else {
             return null;
@@ -185,7 +185,7 @@ class Bird extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            activeSection: "healthcheck",
+            activeSection: "age",
             selectedAge: "",
             condition: ["", "", "", "", ""],
             result: "healthy", 
