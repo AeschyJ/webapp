@@ -3,6 +3,7 @@ import Accordion from 'react-bootstrap/Accordion';
 import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
 import ButtonGroup from 'react-bootstrap/ButtonGroup';
+import Alert from 'react-bootstrap/Alert';
 import { Title, imgOption, optionGroup } from './QuickGuide';
 import "./QuickGuide.css";
 
@@ -54,13 +55,21 @@ function QGDog(){
     return(
         <div>
             {Title(dog, "dogs", "快速指引：狗")}
-            {/* {getLocation} */}
-            <Bird/>
+            <Main/>
         </div>
     );
 }
 export default QGDog;
 
+class UnfinAlert extends React.Component {
+    render() {
+        if(this.props.alert===true && this.props.activeSection === "healthcheck"){
+            return(
+                <div align="center"><div className="box"><Alert variant="danger">表格未完成！</Alert></div></div>
+            );
+        }
+    }
+}
 class SelectAge extends React.Component {
     render() {
         if (this.props.activeSection === "age") {
@@ -89,35 +98,11 @@ class HealthCheck extends React.Component {
         <div align="center">
             <Form className="was-validated">
                 <Accordion defaultActiveKey={['0', '1', '2', '3', '4']} alwaysOpen>
-                    <div className='box'><Accordion.Item eventKey="0">
-                        <Accordion.Header>目視外傷</Accordion.Header>
-                        <Accordion.Body> 
-                            {optionGroup("0", group0, this.props.onConditionSelect)}
-                        </Accordion.Body></Accordion.Item></div>
-
-                    <div className='box'><Accordion.Item eventKey="1">
-                        <Accordion.Header>精神狀況</Accordion.Header>
-                        <Accordion.Body> 
-                            {optionGroup("1", group1, this.props.onConditionSelect)}
-                        </Accordion.Body></Accordion.Item></div>
-
-                    <div className='box'><Accordion.Item eventKey="2">
-                        <Accordion.Header>體溫狀態</Accordion.Header>
-                        <Accordion.Body> 
-                            {optionGroup("2", group2, this.props.onConditionSelect)}
-                        </Accordion.Body></Accordion.Item></div>
-
-                    <div className='box'><Accordion.Item eventKey="3">
-                        <Accordion.Header>體態</Accordion.Header>
-                        <Accordion.Body> 
-                            {optionGroup("3", group3, this.props.onConditionSelect)}
-                        </Accordion.Body></Accordion.Item></div>
-
-                    <div className='box'><Accordion.Item eventKey="4">
-                        <Accordion.Header>其他</Accordion.Header>
-                        <Accordion.Body> 
-                            {optionGroup("4", group4, this.props.onConditionSelect)}
-                        </Accordion.Body></Accordion.Item></div>
+                    {optionGroup("目視外傷", "0", group0, this.props.onConditionSelect)}
+                    {optionGroup("精神狀況", "1", group1, this.props.onConditionSelect)}
+                    {optionGroup("體溫狀態", "2", group2, this.props.onConditionSelect)}
+                    {optionGroup("體態", "3", group3, this.props.onConditionSelect)}
+                    {optionGroup("其他", "4", group4, this.props.onConditionSelect)}
                 </Accordion> 
             </Form>
             <div className="submit-button">
@@ -137,7 +122,6 @@ class HealthCheck extends React.Component {
 
 class Result extends React.Component {   
     render() {
-        const result = this.result;
         if (this.props.activeSection === "result") {
             return (
                 <div align="center">
@@ -173,7 +157,7 @@ class Map extends React.Component {
     }
 }
 
-class Bird extends React.Component {
+class Main extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -182,6 +166,7 @@ class Bird extends React.Component {
             condition: ["", "", "", "", ""],
             result: "", 
             completion: false,
+            showAlert: false
         };
 
         this.handleNext = this.handleNext.bind(this);
@@ -209,7 +194,8 @@ class Bird extends React.Component {
         const { name } = e.target;
         this.setState(() => ({
             activeSection: name,
-            condition: ["", "", "", "", ""]
+            condition: ["", "", "", "", ""],
+            showAlert: false
         }));
     }
     handleCondition(e) {
@@ -251,7 +237,8 @@ class Bird extends React.Component {
         if(isCompleted === true){
             this.setState(() => ({
                 completion: true,
-                activeSection: "result"
+                activeSection: "result",
+                showAlert: false
             }));
             if(healthy===false){
                 this.setState({result: unwellResult_dog});
@@ -271,6 +258,9 @@ class Bird extends React.Component {
                 }
             }
         }
+        else {
+            this.setState({showAlert: true});
+        }
     }
 
     render() {
@@ -280,6 +270,7 @@ class Bird extends React.Component {
                 <HealthCheck activeSection={this.state.activeSection} onBack={this.handleBack} condition={this.state.condition} onSubmit={this.handleResult} onConditionSelect={this.handleCondition}/>
                 <Result activeSection={this.state.activeSection} result={this.state.result} onBack={this.handleBack}/>
                 <Map activeSection={this.state.activeSection} result={this.state.result}/>
+                <UnfinAlert activeSection={this.state.activeSection} alert={this.state.showAlert}/>
             </div>
         );
     }
