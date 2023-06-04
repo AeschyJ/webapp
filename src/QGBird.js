@@ -288,7 +288,7 @@ class Bird extends React.Component {
             if (item === "") {
                 isCompleted = false;
             }
-            if (item != "1" && item != "0"){
+            if (item !== "1" && item !== "0"){
                 healthy = false;
             }
             else if (item === "0" ){

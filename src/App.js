@@ -7,6 +7,7 @@ import Layout from './Layout';
 import QGBird from './QGBird';
 import QGCat from './QGCat';
 import QGDog from './QGDog';
+import PostPage from './PostPage';
 
 function App() {
 
@@ -20,6 +21,7 @@ function App() {
           <Route path="cat" element={<QGCat/>} />
           <Route path="dog" element={<QGDog/>} />
         </Route>
+        <Route path="postpage" element={<PostPage/>} />
         <Route path='' element={<Navigate to='homepage'/>}/>
       </Route>
       <Route path='/' element={<Navigate to='/WEBAPP/React/build/homepage'/>}/>
