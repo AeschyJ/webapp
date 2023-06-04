@@ -4,7 +4,7 @@ import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
 import ButtonGroup from 'react-bootstrap/ButtonGroup';
 import Alert from 'react-bootstrap/Alert';
-import { Title, imgOption, optionGroup, options } from './QuickGuide';
+import { Title, imgOption, optionGroup, options, ShowMap } from './QuickGuide';
 import "./QuickGuide.css";
 
 import Pigeon from "./img/pigeons.jpg";
@@ -169,11 +169,9 @@ class Result extends React.Component {
 
 class Map extends React.Component { 
     render() {
-        if (this.props.activeSection === "result") {
+        if (this.props.activeSection === "result" && this.props.result!=={healthyNest_cantbackResult}) {
             return (
-                <div align="center">
-                    <iframe width="300" height="170" src="https://maps.google.com/maps?q=獸醫+桃園&hl=zh-TW&z=12&amp;output=embed"></iframe>
-                </div>
+                <ShowMap/>
             );
         } else {
             return null;
@@ -201,14 +199,9 @@ class Bird extends React.Component {
         this.handleAgeSelection = this.handleAgeSelection.bind(this);
         this.handleCondition = this.handleCondition.bind(this);
         this.handleResult = this.handleResult.bind(this);
-        this.handleCloseAlert = this.handleCloseAlert.bind(this);
 
         this.handleNestChoice = this.handleNestChoice.bind(this);
         this.handleNestSubmit = this.handleNestSubmit.bind(this);
-    }
-
-    handleCloseAlert(){
-        this.setState({showAlert: false});
     }
 
     handleNext(e) {
@@ -347,7 +340,7 @@ class Bird extends React.Component {
                 <EnvironmentCheck activeSection={this.state.activeSection} instruction={this.state.instruction} onSelect={this.handleNestChoice} onSubmit={this.handleNestSubmit}/>
                 <Result activeSection={this.state.activeSection} result={this.state.result} onBack={this.handleBack}/>
                 <Map activeSection={this.state.activeSection} result={this.state.result}/>
-                <UnfinAlert activeSection={this.state.activeSection} alert={this.state.showAlert} onClose={this.handleCloseAlert}/>
+                <UnfinAlert activeSection={this.state.activeSection} alert={this.state.showAlert}/>
             </div>
         );
     }
