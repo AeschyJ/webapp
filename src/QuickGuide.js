@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import Card from 'react-bootstrap/Card';
 import Form from 'react-bootstrap/Form';
 import Accordion from 'react-bootstrap/Accordion';
@@ -70,5 +70,25 @@ function options(groupname, arr, onConditionSelect) {
     );
 }
 
-export { Title, imgOption, optionGroup, options };
+function ShowMap () {
+    const [location, setLocation] = useState("新北");
+    const locs = ["新北", "臺北", "桃園", "台中", "台南", "高雄", "基隆", "新竹", "苗栗", "彰化", "南投", "雲林", "嘉義", "屏東", "宜蘭", "花蓮", "台東", "澎湖", "金門", "連江"];
+    return (
+        <>
+        <div align="center">
+        <div className="add-more-padding"><select value={location} onChange={e => setLocation(e.target.value)}>
+            {locs.map((item) => <option value={item}>{item}</option>)}
+        </select></div>
+            <iframe 
+                width="300" 
+                height="170" 
+                src={`https://maps.google.com/maps?q=獸醫+${location}&hl=zh-TW&z=13&amp&output=embed`}
+                >
+            </iframe>
+        </div>
+        </>
+    );
+}
+
+export { Title, imgOption, optionGroup, options, ShowMap };
 
