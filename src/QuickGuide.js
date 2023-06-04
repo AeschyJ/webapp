@@ -1,8 +1,10 @@
+import React from "react";
 import Card from 'react-bootstrap/Card';
 import Form from 'react-bootstrap/Form';
+import Accordion from 'react-bootstrap/Accordion';
 
-function Title(img, alt, title){
-    return(
+function Title(img, alt, title) {
+    return (
         <Card className='justify-content-center d-flex'>
             <Card.Img 
                 className='cardimg'
@@ -33,26 +35,40 @@ function imgOption(arr, onAgeSelect) {
         </>
     );
 }
-function optionGroup(groupname, arr, onConditionSelect) {
+function optionGroup(header, groupname, arr, onConditionSelect) {
     return (
         <>
-        <div className="form-check"> 
-            {arr.map((item) => (
-                <><Form.Check class="form-check" className="option">
+        <div className='box'><Accordion.Item eventKey={groupname}>
+            <Accordion.Header>{header}</Accordion.Header>
+            <Accordion.Body> 
+                {arr.map((item) => (
+                    <Form.Check class="form-check" className="option">
+                        <input type="radio" class="form-check-input input-hidden" id={item.id} name={groupname} onClick={onConditionSelect} required/>
+                        <label class="form-check-label" for={item.id}><div>{item.label}</div></label>
+                    </Form.Check>
+                ))}
+                <Form.Check class="form-check" className="option">
+                        <input type="radio" class="form-check-input input-hidden" id={groupname+"0"} name={groupname} onClick={onConditionSelect} required/>
+                        <label class="form-check-label" for={groupname+"0"}><div>?</div></label>
+                        <div class="invalid-feedback">*必填</div>
+                </Form.Check>
+            </Accordion.Body>
+        </Accordion.Item></div>
+        </>
+    );
+}
+function options(groupname, arr, onConditionSelect) {
+    return(
+        <>
+        {arr.map((item) => (
+                <Form.Check class="form-check" className="option">
                     <input type="radio" class="form-check-input input-hidden" id={item.id} name={groupname} onClick={onConditionSelect} required/>
                     <label class="form-check-label" for={item.id}><div>{item.label}</div></label>
-                </Form.Check></>
-            ))}
-            <><Form.Check class="form-check" className="option">
-                    <input type="radio" class="form-check-input input-hidden" id={groupname+"0"} name={groupname} onClick={onConditionSelect} required/>
-                    <label class="form-check-label" for={groupname+"0"}><div>?</div></label>
-                    <div class="invalid-feedback">*必填</div>
-            </Form.Check></>
-        </div>
+                </Form.Check>
+        ))}
         </>
     );
 }
 
-export { Title, imgOption, optionGroup };
+export { Title, imgOption, optionGroup, options };
 
-/* <div align="center"><div className='box' align="center"><Alert variant='danger'>表格未完成！</Alert></div></div> */
