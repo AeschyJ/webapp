@@ -172,12 +172,8 @@ class Map extends React.Component {
         if (this.props.activeSection === "result") {
             return (
                 <>
-                    <Demo/>
+                    <iframe width="300" height="170" src="https://maps.google.com/maps?q=獸醫+桃園&hl=zh-TW&z=12&amp;output=embed"></iframe>
                 </>
-                //<Demo />
-                //<div align="center"><iframe src="https://maps.googleapis.com/maps/api/js?key=YOUR_API_KEY&region=JP&language=ja&callback=initMap"><a href="https://www.maps.ie/distance-area-calculator.html">distance maps</a></iframe></div>
-                //https://www.google.com/maps/embed?pb=!1m16!1m12!1m3!1d14461.340873575753!2d121.53524947935185!3d25.022690417760334!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!2m1!1z54246Yar!5e0!3m2!1szh-TW!2stw!4v1685614250038!5m2!1szh-TW!2stw
-                //<div align="center"><iframe src="http://maps.google.com/maps?q=vet+pet+hospital+clinic&z=10&output=embed"></iframe></div>
             );
         } else {
             return null;
