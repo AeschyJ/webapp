@@ -5,7 +5,7 @@ function Footer(){
         //     1233
         // </div>
         <footer id='footer'>
-            <h3>123456</h3>
+            <h1>123456</h1>
         </footer>
     );
 }
