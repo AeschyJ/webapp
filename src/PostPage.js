@@ -10,7 +10,6 @@ import {useNavigate} from 'react-router-dom'
 
 import * as formik from 'formik';
 import * as yup from 'yup';
-import axios from "axios";
 
 import Placeholder from './placeholder';
 import "./HomePage.css";
