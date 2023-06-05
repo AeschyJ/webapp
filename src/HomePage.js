@@ -21,6 +21,7 @@ import Samoyed from "./img/samoyed-royalty-free-image-1581005065.jpg"
 import Cat from "./img/QGCat/cat.jpg";
 import Dog from "./img/QGdog/dog.png";
 import Bird from "./img/QGbird/bird.jpg";
+import Donate from "./img/donate.jpg"
 
 var basename="/WEBAPP/React/build/"
 function HomePage(){
@@ -243,11 +244,18 @@ function Donation(){
     return(
         <Row direction="horizontal" className='dona m-5 justify-content-around border border-dark rounded shadow-sm'>
             <Col sm={5} className='p-0'>
-                <img src={Shetland} alt='donationImage' className='donaImg'/>
+                <img src={Donate} alt='donationImage' className='donaImg'/>
             </Col>
             <Col sm={7} style={{minHeight: '50vh',}}>
                 <Container className='p-3'>
-                    <h1>立即捐款</h1>
+                    <h2>立即捐款</h2>
+                    <li><a href="https://east.neticrm.tw/civicrm/contribute/transact?reset=1&id=2" target="_blank">1. 台灣動物社會研究會</a></li>
+                    <li><a href="http://www.hsapf.org.tw/" target="_blank">2. 財團法人動物流浪之家</a></li>
+                    <li><a href="https://harvest365.org/org-intro/?organization=577" target="_blank">3. 社團法人臺灣咪可思關懷流浪動物協會</a></li>
+                    <li><a href="https://www.loverabbit.org/about/20" target="_blank">4. 台灣愛兔協會</a></li>
+                    <li><a href="https://www.lca.org.tw/" target="_blank">5. 關懷生命協會</a></li>
+                    <li><a href="https://helpdogs.tw/dogs/gad0913?gad=1&gclid=Cj0KCQjwj_ajBhCqARIsAA37s0w14Qskmmc6my7KMjVlLS7xhUgYaNQl3m7oCTcGF_OI_fOmTQ7O4P8aAmH7EALw_wcB" target="_blank">6. 浪愛集食</a></li>
+                    <h5>"給浪浪們一頓溫飽"</h5>
                 </Container>
             </Col>
         </Row>
