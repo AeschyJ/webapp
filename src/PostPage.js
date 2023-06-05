@@ -96,7 +96,7 @@ function PostForm() {
                 </InputGroup>
 
                 <Row className="my-5 justify-content-between">
-                    <Form.Group as={Col} md={3}>
+                    <Form.Group as={Col} lg={3} className='my-3'>
                         <Form.Label>
                             <h4>上傳圖片</h4>
                         </Form.Label>
@@ -122,7 +122,7 @@ function PostForm() {
                             />
                         </InputGroup>
                     </Form.Group>
-                    <Form.Group as={Col} md={3}>
+                    <Form.Group as={Col} lg={3} className='my-3'>
                         <Form.Label>
                             <h4>上傳圖片2</h4>
                         </Form.Label>
@@ -147,7 +147,7 @@ function PostForm() {
                             />
                         </InputGroup>
                     </Form.Group>
-                    <Form.Group as={Col} md={3}>
+                    <Form.Group as={Col} lg={3} className='my-3'>
                         <Form.Label>
                             <h4>上傳圖片3</h4>
                         </Form.Label>

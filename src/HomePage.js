@@ -37,16 +37,16 @@ export default HomePage
 
 function Description(){
     return(
-            <Stack direction="horizontal" gap={0} className='row mx-3 justify-content-around'>
-                <Container className='des col-sm-5 col-md-4 col-lg-3 col-xxl-2 col-6 border border-dark rounded shadow-sm'>
-                    <h3 className='m-3'>關於本站</h3>
-                    <p className='m-3'>我們是一個由台大學生組成的團隊，我們發現該包含我們在內，大部分的人都不確定如何正確地拯救受傷的流浪動物，為了改善這個現象，故建立了一個救援指引網站，希望可以幫助到大家。</p>
-                    <p className='m-3'>在我們的網站上，可以找到各種有關流浪動物救援的資源或文章，還有流浪動物的救援和的急救指南，目前指引包含路上最常見的貓、狗、鳥類，後續會陸續增加其他種類動物，也非常歡迎大家一起分享救援經驗。</p>
-                </Container>
-                <Container className='col-md-8'>
-                    <Display/>
-                </Container>
-            </Stack>
+                <Row className='mx-3 justify-content-evenly gy-3'>
+                    <Col md={4} className='des col-lg-3 border border-dark rounded shadow-sm'>
+                        <h3 className='m-3'>關於本站</h3>
+                        <p className='m-3'>我們是一個由台大學生組成的團隊，我們發現該包含我們在內，大部分的人都不確定如何正確地拯救受傷的流浪動物，為了改善這個現象，故建立了一個救援指引網站，希望可以幫助到大家。</p>
+                        <p className='m-3'>在我們的網站上，可以找到各種有關流浪動物救援的資源或文章，還有流浪動物的救援和的急救指南，目前指引包含路上最常見的貓、狗、鳥類，後續會陸續增加其他種類動物，也非常歡迎大家一起分享救援經驗。</p>
+                    </Col>
+                    <Col md={8}>
+                        <Display/>
+                    </Col>
+                </Row>
     );
 }
 
@@ -102,7 +102,7 @@ function QuickGuide(){
                         <LinkContainer to={basename+'quickguide/dog'} style={{ width: '18rem' , height:'20rem'}}>
                             <Card className='card position-relative'>
                                 <Card.Img 
-                                className='cardimage'
+                                className='QGcardimage'
                                 variant="top" 
                                 src={Dog}
                                 alt='Dog'/>
@@ -116,7 +116,7 @@ function QuickGuide(){
                         <LinkContainer to={basename+'quickguide/cat'} style={{ width: '18rem' , height:'20rem'}}>
                             <Card className='card position-relative'>
                                 <Card.Img 
-                                className='cardimage'
+                                className='QGcardimage'
                                 variant="top"
                                 src={Cat} 
                                 alt='Cat'/>
@@ -130,7 +130,7 @@ function QuickGuide(){
                         <LinkContainer to={basename+'quickguide/bird'} style={{ width: '18rem' , height:'20rem'}}>
                             <Card className='card position-relative'>
                                 <Card.Img 
-                                className='cardimage'
+                                className='QGcardimage'
                                 variant="top"
                                 src={Bird}
                                 alt='Bird'/>
@@ -154,7 +154,7 @@ function Experience(){
     return(
         <>
             <Placeholder/>
-            <LinkContainer to={basename+'second'}>
+            <LinkContainer to={basename+'postpage'}>
                 <div className="d-grid gap-2 w-50 my-3 mx-auto">
                     <Button variant="dark" size="lg">
                         我來分享
@@ -162,15 +162,13 @@ function Experience(){
                 </div>
             </LinkContainer>
             <Placeholder/>
-            <Container>
+            <Container className='my-3'>
                 <h2>緊急處置經驗</h2>
             </Container>
-            <Placeholder/>
             <ShowExperience/>
-            <Container>
+            <Container className='my-3'>
                 <h2>其他處置經驗</h2>
             </Container>
-            <Placeholder/>
             <ShowExperience/>
         </>
     );
@@ -180,7 +178,7 @@ function ShowExperience(props){
     return(
         <div>
             <Container className='my-5'>
-                <Row className='px-auto'>
+                <Row className='px-auto gy-3'>
                     <Col sm className='justify-content-center d-flex col-md-3'>
                         <ExperienceCard src={Shetland} title='Title1' content='content' date='date' link=''/>
                     </Col>
