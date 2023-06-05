@@ -1,24 +1,73 @@
-from flask import Flask
-from flask_restful import Api
+from flask import Flask, request, jsonify
+from flask_sqlalchemy import SQLAlchemy
 from flask_cors import CORS
-from flask_login import LoginManager
-from flask_jwt_extended import JWTManager
-from api import user
 
 app = Flask(__name__)
-CORS(app, resources={r"/*": {"origins": "*"}})
+# 資料庫連接為webapp的資料夾路徑
+app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///C:/Users/E/webapp_master_newnew/Backend/Stray_Animals.db'
+db = SQLAlchemy(app)
+cors = CORS(app)
 
-login_manager = LoginManager()
-login_manager.init_app(app)
 
-app.config["JWT_SECRET_KEY"] = "jwtsecret"
-jwt = JWTManager(app)
+class User(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(50), nullable=False)
+    email = db.Column(db.String(100), unique=True, nullable=False)
+    password = db.Column(db.String(100), nullable=False)
 
-api = Api(app)
-api.add_resource(user.User, "/api/users")
-api.add_resource(user.User, "/api/users/<int:userId>", endpoint="get-user")
-api.add_resource(user.User.SignIn, "/api/users/signIn")
-api.add_resource(user.User.Me, "/api/users/me")
 
-if __name__ == "__main__":
+class Post(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    title = db.Column(db.String(100), nullable=False)
+    content = db.Column(db.Text, nullable=False)
+
+
+@app.route('/register', methods=['POST'])
+def register():
+    form_data = request.get_json()
+    print('表單資料:', form_data)
+
+    name = form_data.get('name')
+    email = form_data.get('email')
+    password = form_data.get('password')
+
+    user = User(name=name, email=email, password=password)
+    db.session.add(user)
+    db.session.commit()
+
+    return jsonify({'message': '註冊成功'})
+
+
+@app.route('/login', methods=['POST'])
+def login():
+    form_data = request.get_json()
+    print('登入資料:', form_data)
+
+    email = form_data.get('email')
+    password = form_data.get('password')
+
+    user = User.query.filter_by(email=email).first()
+
+    if user and user.password == password:
+        return jsonify({'message': '登入成功'})
+    else:
+        return jsonify({'message': '登入失敗'}), 401
+
+
+@app.route('/post', methods=['POST'])
+def create_post():
+    title = request.form.get('title')
+    content = request.form.get('content')
+
+    new_post = Post(title=title, content=content)
+
+    db.session.add(new_post)
+    db.session.commit()
+
+    return jsonify({'message': '貼文已新增'})
+
+
+if __name__ == '__main__':
+    with app.app_context():
+        db.create_all()
     app.run()

@@ -18,10 +18,6 @@ import Placeholder from './placeholder';
 import Shetland from "./img/dog-shetland-sheepdog-collie-sheltie-royalty-free-image-491206081-1565123992.jpg";
 import Golden from "./img/golden-retriever-royalty-free-image-506756303-1560962726.jpg"
 import Samoyed from "./img/samoyed-royalty-free-image-1581005065.jpg"
-import Cat from "./img/QGCat/cat.jpg";
-import Dog from "./img/QGdog/dog.png";
-import Bird from "./img/QGbird/bird.jpg";
-import Donate from "./img/donate.jpg"
 
 var basename="/WEBAPP/React/build/"
 function HomePage(){
@@ -41,8 +37,7 @@ function Description(){
             <Stack direction="horizontal" gap={0} className='row mx-3 justify-content-around'>
                 <Container className='des col-sm-5 col-md-4 col-lg-3 col-xxl-2 col-6 border border-dark rounded shadow-sm'>
                     <h3 className='m-3'>關於本站</h3>
-                    <p className='m-3'>我們是一個由台大學生組成的團隊，我們發現該包含我們在內，大部分的人都不確定如何正確地拯救受傷的流浪動物，為了改善這個現象，故建立了一個救援指引網站，希望可以幫助到大家。</p>
-                    <p className='m-3'>在我們的網站上，可以找到各種有關流浪動物救援的資源或文章，還有流浪動物的救援和的急救指南，目前指引包含路上最常見的貓、狗、鳥類，後續會陸續增加其他種類動物，也非常歡迎大家一起分享救援經驗。</p>
+                    <p className='m-3'>描述</p>
                 </Container>
                 <Container className='col-md-8'>
                     <Display/>
@@ -61,8 +56,8 @@ function Display(){
               alt="First slide"
             />
             <Carousel.Caption>
-              <h3>因為基因的關係，貓咪這種動物嚐不出甜味~</h3>
-              <p>“我們相信每一隻生命都應該被尊重和關愛，無論牠們的種類或狀態如何。</p>
+              <h3>First slide label</h3>
+              <p>Nulla vitae elit libero, a pharetra augue mollis interdum.</p>
             </Carousel.Caption>
           </Carousel.Item>
           <Carousel.Item>
@@ -72,8 +67,8 @@ function Display(){
               alt="Second slide"
             />
             <Carousel.Caption>
-              <h3>大多數的流浪狗並不會頻繁更換居所~</h3>
-              <p>"動物是人類親密的朋友，人類是動物信賴的夥伴。"</p>
+              <h3>Second slide label</h3>
+              <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
             </Carousel.Caption>
           </Carousel.Item>
           <Carousel.Item>
@@ -83,8 +78,10 @@ function Display(){
               alt="Third slide"
             />
             <Carousel.Caption>
-              <h3>貓咪睡覺的時間高達牠們生命的70%!</h3>
-              <p>"區分野小孩與毛小孩，是保育的開端。"</p>
+              <h3>Third slide label</h3>
+              <p>
+                Praesent commodo cursus magna, vel scelerisque nisl consectetur.
+              </p>
             </Carousel.Caption>
           </Carousel.Item>
         </Carousel>
@@ -96,16 +93,15 @@ function QuickGuide(){
         <Container className='my-5'>
             <Placeholder/>
             <h2>快速指引</h2>
-            
             <Container className='mt-5'>
                 <Row className='px-auto g-3'>
                     <Col sm className='justify-content-center d-flex'>
-                        <LinkContainer to={basename+'quickguide/dog'} style={{ width: '18rem' , height:'20rem'}}>
-                            <Card className='card position-relative'>
+                        <LinkContainer to={basename+'quickguide'} style={{ width: '18rem' , height:'20rem'}}>
+                            <Card className='QGcard position-relative'>
                                 <Card.Img 
                                 className='cardimage'
                                 variant="top" 
-                                src={Dog}
+                                src={Shetland}
                                 alt='Dog'/>
                                 <Card.ImgOverlay>
                                     <Card.Title className='d-flex position-absolute bottom-0 start-50 translate-middle-x mb-5 d-block w-100 bg-dark text-light justify-content-center opacity-75 h-25 align-items-center'>狗</Card.Title>
@@ -114,12 +110,12 @@ function QuickGuide(){
                         </LinkContainer>
                     </Col>
                     <Col sm className='justify-content-center d-flex'> 
-                        <LinkContainer to={basename+'quickguide/cat'} style={{ width: '18rem' , height:'20rem'}}>
-                            <Card className='card position-relative'>
+                        <LinkContainer to={basename+'quickguide'} style={{ width: '18rem' , height:'20rem'}}>
+                            <Card className='QGcard position-relative'>
                                 <Card.Img 
                                 className='cardimage'
                                 variant="top"
-                                src={Cat} 
+                                src={Golden} 
                                 alt='Cat'/>
                                 <Card.ImgOverlay>
                                     <Card.Title className='d-flex position-absolute bottom-0 start-50 translate-middle-x mb-5 d-block w-100 bg-dark text-light justify-content-center opacity-75 h-25 align-items-center'>貓</Card.Title>
@@ -128,12 +124,12 @@ function QuickGuide(){
                         </LinkContainer>
                     </Col>
                     <Col sm className='justify-content-center d-flex'>
-                        <LinkContainer to={basename+'quickguide/bird'} style={{ width: '18rem' , height:'20rem'}}>
-                            <Card className='card position-relative'>
+                        <LinkContainer to={basename+'quickguide'} style={{ width: '18rem' , height:'20rem'}}>
+                            <Card className='QGcard position-relative'>
                                 <Card.Img 
                                 className='cardimage'
                                 variant="top"
-                                src={Bird}
+                                src={Samoyed}
                                 alt='Bird'/>
                                 <Card.ImgOverlay>
                                     <Card.Title 
@@ -149,13 +145,12 @@ function QuickGuide(){
         </Container>
     );
 }
-export {QuickGuide};
 
 function Experience(){
     return(
         <>
             <Placeholder/>
-            <LinkContainer to={basename+'second'}>
+            <LinkContainer to={basename+''}>
                 <div className="d-grid gap-2 w-50 my-3 mx-auto">
                     <Button variant="dark" size="lg">
                         我來分享
@@ -244,18 +239,11 @@ function Donation(){
     return(
         <Row direction="horizontal" className='dona m-5 justify-content-around border border-dark rounded shadow-sm'>
             <Col sm={5} className='p-0'>
-                <img src={Donate} alt='donationImage' className='donaImg'/>
+                <img src={Shetland} alt='donationImage' className='donaImg'/>
             </Col>
             <Col sm={7} style={{minHeight: '50vh',}}>
                 <Container className='p-3'>
-                    <h2>立即捐款</h2>
-                    <li><a href="https://east.neticrm.tw/civicrm/contribute/transact?reset=1&id=2" target="_blank">1. 台灣動物社會研究會</a></li>
-                    <li><a href="http://www.hsapf.org.tw/" target="_blank">2. 財團法人動物流浪之家</a></li>
-                    <li><a href="https://harvest365.org/org-intro/?organization=577" target="_blank">3. 社團法人臺灣咪可思關懷流浪動物協會</a></li>
-                    <li><a href="https://www.loverabbit.org/about/20" target="_blank">4. 台灣愛兔協會</a></li>
-                    <li><a href="https://www.lca.org.tw/" target="_blank">5. 關懷生命協會</a></li>
-                    <li><a href="https://helpdogs.tw/dogs/gad0913?gad=1&gclid=Cj0KCQjwj_ajBhCqARIsAA37s0w14Qskmmc6my7KMjVlLS7xhUgYaNQl3m7oCTcGF_OI_fOmTQ7O4P8aAmH7EALw_wcB" target="_blank">6. 浪愛集食</a></li>
-                    <h5>"給浪浪們一頓溫飽"</h5>
+                    <h1>立即捐款</h1>
                 </Container>
             </Col>
         </Row>

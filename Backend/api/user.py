@@ -2,9 +2,12 @@ from flask import request, jsonify, make_response
 from flask_jwt_extended import jwt_required, create_access_token, get_jwt_identity
 from flask_restful import Resource
 from werkzeug.security import generate_password_hash, check_password_hash
-
+from flask_sqlalchemy import SQLAlchemy
 from api.general import *
 
+
+
+db = SQLAlchemy(app)
 
 class User(Resource):
     def post(self):
