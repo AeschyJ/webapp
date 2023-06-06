@@ -43,7 +43,7 @@ function RegisterForm() {
       }
     } catch (error) {
       console.error('發生錯誤', error);
-      setRegistrationError('發生錯誤，請重試(可能為信箱已使用或名子已使用)'); // Set generic error message
+      setRegistrationError('發生錯誤，請重試(可能為信箱已使用或名字已使用)'); // Set generic error message
       setRegistrationSuccess(false); // Set registration success to false
     }
   };

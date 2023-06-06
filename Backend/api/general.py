@@ -8,6 +8,7 @@ def connect_to_db():
     BASE_DIR = os.path.abspath(basePath)
     db_path = os.path.join(BASE_DIR, 'Stray Animals.db')
     conn = sqlite3.connect(db_path)
+    print(BASE_DIR)
     return conn
 
 

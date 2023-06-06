@@ -10,6 +10,7 @@ import {useNavigate} from 'react-router-dom'
 
 import * as formik from 'formik';
 import * as yup from 'yup';
+import axios from 'axios';
 
 import Placeholder from './placeholder';
 import "./HomePage.css";
@@ -29,6 +30,7 @@ function PostForm() {
   
     const schema = yup.object().shape({
       title: yup.string().required(),
+      location: yup.string().required(),
       content: yup.string().required(),
       image1: yup.mixed().required(),
       imagedes1: yup.string(),
@@ -42,9 +44,22 @@ function PostForm() {
         <Container>
         <Formik
             validationSchema={schema}
-            onSubmit={console.log}
+            onSubmit={(values)=>{
+                let data = new FormData();
+                Object.entries(values).forEach((value) => {
+                    data.append(value[0],value[1])
+                });
+                // data.append('image1',values.image1)
+                let headers={'Content-Type': 'multipart/form-data'}
+                axios.post(
+                    "http://127.0.0.1:5000/image",
+                    data,
+                    {headers: headers}
+                )
+            }}
             initialValues={{
             title: '',
+            location: '',
             content: '',
             image1: null,
             imagedes1: '',
@@ -54,7 +69,7 @@ function PostForm() {
             imagedes3: '',
             }}
         >
-            {({ handleSubmit, handleChange, handleBlur, values, touched, errors }) => (
+            {({ handleSubmit, handleChange, handleBlur, values, touched, errors, setFieldValue}) => (
                     
             <Form noValidate onSubmit={handleSubmit}>
                 <div className="d-grid">
@@ -73,6 +88,25 @@ function PostForm() {
                         isInvalid={touched.title && !!errors.title}
                         />
                         <Form.Control.Feedback type='invalid'>請輸入文章標題</Form.Control.Feedback>
+                    </Form.Group>
+                </div>
+                <br/>
+                <div className="d-grid">
+                    <Form.Group controlId="validationFormik01">
+                        <Form.Label className=''>
+                            <h3>發生地點</h3>
+                        </Form.Label>
+                        <Form.Control
+                        type="text"
+                        size="lg"
+                        name="location"
+                        placeholder='地點'
+                        value={values.location}
+                        onChange={handleChange}
+                        onBlur={handleBlur}
+                        isInvalid={touched.location && !!errors.location}
+                        />
+                        <Form.Control.Feedback type='invalid'>請輸入發生地點</Form.Control.Feedback>
                     </Form.Group>
                 </div>
                 <br/>
@@ -104,11 +138,12 @@ function PostForm() {
                         accept='image/*'
                         required
                         name="image1"
-                        onChange={handleChange}
+                        onChange={(event) => {
+                            setFieldValue("image1", event.currentTarget.files[0]);}}
                         onBlur={handleBlur}
                         isInvalid={!!errors.image1 && touched.image1}
                         />
-                        <Form.Control.Feedback type="invalid">請上傳圖片</Form.Control.Feedback>
+                        <Form.Control.Feedback type="invalid">請上傳至少一張圖片</Form.Control.Feedback>
                         <InputGroup hasValidation size="md" style={{minHeight:"90px"}}>
                             <Form.Control
                             type="text"
