@@ -1,5 +1,5 @@
 from flask import request, jsonify, make_response
-from flask_jwt_extended import jwt_required, create_access_token, get_jwt_identity
+from flask_jwt_extended import jwt_required, create_access_token, get_jwt_identity, exceptions
 from flask_restful import Resource
 from werkzeug.security import generate_password_hash, check_password_hash
 # import cv2
@@ -14,7 +14,7 @@ class User(Resource):
             conn = connect_to_db()
             cur = conn.cursor()
             cur.execute("INSERT INTO users (name, email, password) VALUES (?, ?, ?)",
-                        (user['name'], user['email'], generate_password_hash(user['password'], method='scrypt')))
+                        (user['name'], user['email'], generate_password_hash(user['password'], method='pbkdf2:sha256')))
             conn.commit()
             user = get_user_by_id(cur.lastrowid)
             response = make_response(jsonify({"status": 0,
@@ -38,15 +38,22 @@ class User(Resource):
     class Me(Resource):
         @jwt_required()
         def get(self):
-            user = get_user_by_id(get_jwt_identity())
-            response = make_response(jsonify({"status": 0,
-                                              "message": "success",
-                                              "data": user}),
-                                     200)
+            try:
+                user = get_user_by_id(get_jwt_identity())
+                response = make_response(jsonify({"status": 0,
+                                                "message": "success",
+                                                "data": user}),
+                                        200)
+            except exceptions.ExpiredSignatureError as e:
+                response = make_response(jsonify({"status": -1,
+                                                "message": "Token Expired",
+                                                "data": None}),
+                                        400)
             return response
 
         @jwt_required()
         def patch(self):
+            
             user = request.get_json()
             updated_user = update_user(user, get_jwt_identity())
             response = make_response(jsonify({"status": 0,
@@ -70,7 +77,7 @@ class User(Resource):
                                                       }}),
                                              200)
                 else:
-                    response = make_response(jsonify({"status": -1,
+                    response = make_response(jsonify({"status": 5,
                                                       "message": "Wrong email or password.", }),
                                              401)
             except Exception as e:
@@ -93,4 +100,3 @@ class User(Resource):
                                               "message": "Can't get the other's information"}),
                                      400)
         return response
-

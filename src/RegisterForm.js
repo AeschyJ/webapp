@@ -1,7 +1,11 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { Form, Button, Alert } from 'react-bootstrap';
+import apis from './api';
+import { useNavigate } from 'react-router-dom';
+import axios from 'axios';
 
 function RegisterForm() {
+  const navigate = useNavigate();
   const [formData, setFormData] = useState({
     name: '',
     email: '',
@@ -24,7 +28,7 @@ function RegisterForm() {
     event.preventDefault();
 
     try {
-      const response = await fetch('http://localhost:5000/register', {
+      const response = await fetch(apis.users, {
         //http://localhost:5000/register傳到後端的port做運行
         method: 'POST',
         headers: {
@@ -36,6 +40,16 @@ function RegisterForm() {
       if (response.ok) {
         setRegistrationSuccess(true); // Update registration status
         setRegistrationError(null); // Clear registration error
+        axios.post(
+          apis.login,
+          {'email':formData.email,'password':formData.password}
+        ).then((response)=>{
+          navigate(-1);
+          sessionStorage.setItem('isLoggedIn', 'true');
+          sessionStorage.setItem('JWT_TOKEN', response.data.token)}).catch((error)=>
+            console.log(error)
+        )
+        setTimeout(()=>navigate('/'), 1000)
       } else {
         const data = await response.json();
         setRegistrationError(data.message); // Set registration error message
@@ -49,6 +63,9 @@ function RegisterForm() {
   };
 
   useEffect(() => {
+    if (sessionStorage.getItem('isLoggedIn') === 'true') {
+      navigate(-1)
+    }
     let timer;
     if (registrationSuccess || registrationError) {
       timer = setTimeout(() => {

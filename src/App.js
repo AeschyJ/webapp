@@ -25,9 +25,9 @@ function App() {
           <Route path="dog" element={<QGDog/>} />
         </Route>
         <Route path="postpage" element={<PostPage/>} />
-        <Route path='' element={<Navigate to='homepage'/>}/>
         <Route path="register" element={<RegisterForm />} />
         <Route path="postform" element={<Postform />} />
+        <Route path='' element={<Navigate to='homepage'/>}/>
       </Route>
       <Route path='/' element={<Navigate to='/WEBAPP/React/build/homepage'/>}/>
      </Routes>

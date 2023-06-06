@@ -11,6 +11,7 @@ import {useNavigate} from 'react-router-dom'
 import * as formik from 'formik';
 import * as yup from 'yup';
 import axios from 'axios';
+import apis from './api';
 
 import Placeholder from './placeholder';
 import "./HomePage.css";
@@ -33,11 +34,12 @@ function PostForm() {
       location: yup.string().required(),
       content: yup.string().required(),
       image1: yup.mixed().required(),
-      imagedes1: yup.string(),
+      image1des: yup.string(),
       image2: yup.mixed().notRequired(),
-      imagedes2: yup.string(),
+      image2des: yup.string(),
       image3: yup.mixed().notRequired(),
-      imagedes3: yup.string(),
+      image3des: yup.string(),
+      urgent: yup.boolean(),
     });
   
     return (
@@ -50,11 +52,14 @@ function PostForm() {
                     data.append(value[0],value[1])
                 });
                 // data.append('image1',values.image1)
-                let headers={'Content-Type': 'multipart/form-data'}
+                let headers={'Content-Type': 'multipart/form-data',
+                            'Authorization': 'Bearer ' + sessionStorage.getItem('JWT_TOKEN')}
                 axios.post(
-                    "http://127.0.0.1:5000/image",
+                    apis.posts,
                     data,
                     {headers: headers}
+                ).then(navigate(-1)).catch((error)=>
+                    console.log(error)
                 )
             }}
             initialValues={{
@@ -62,11 +67,12 @@ function PostForm() {
             location: '',
             content: '',
             image1: null,
-            imagedes1: '',
+            image1des: '',
             image2: null,
-            imagedes2: '',
+            image2des: '',
             image3: null,
-            imagedes3: '',
+            image3des: '',
+            urgent: false,
             }}
         >
             {({ handleSubmit, handleChange, handleBlur, values, touched, errors, setFieldValue}) => (
@@ -147,9 +153,9 @@ function PostForm() {
                         <InputGroup hasValidation size="md" style={{minHeight:"90px"}}>
                             <Form.Control
                             type="text"
-                            name="imagedes1"
+                            name="image1des"
                             placeholder='圖片描述'
-                            value={values.imagedes1}
+                            value={values.image1des}
                             onChange={handleChange}
                             as="textarea"
                             aria-label="Middle"
@@ -164,17 +170,18 @@ function PostForm() {
                         type="file"
                         accept='image/*'
                         name="image2"
-                        onChange={handleChange}
+                        onChange={(event) => {
+                            setFieldValue("image2", event.currentTarget.files[0]);}}
                         onBlur={handleBlur}
-                        isInvalid={!values.image2 && !!values.imagedes2}
+                        isInvalid={!values.image2 && !!values.image2des}
                         />
                         <Form.Control.Feedback type="invalid">請上傳圖片</Form.Control.Feedback>
                         <InputGroup hasValidation size="md" style={{minHeight:"90px"}}>
                             <Form.Control
                             type="text"
-                            name="imagedes2"
+                            name="image2des"
                             placeholder='圖片描述'
-                            value={values.imagedes2}
+                            value={values.image2des}
                             onChange={handleChange}
                             as="textarea"
                             aria-label="Middle"
@@ -189,17 +196,18 @@ function PostForm() {
                         type="file"
                         accept='image/*'
                         name="image3"
-                        onChange={handleChange}
+                        onChange={(event) => {
+                            setFieldValue("image3", event.currentTarget.files[0]);}}
                         onBlur={handleBlur}
-                        isInvalid={!values.image3 && !!values.imagedes3}
+                        isInvalid={!values.image3 && !!values.image3des}
                         />
                         <Form.Control.Feedback type="invalid">請上傳圖片</Form.Control.Feedback>
                         <InputGroup hasValidation size="md" style={{minHeight:"90px"}}>
                             <Form.Control
                             type="text"
-                            name="imagedes3"
+                            name="image3des"
                             placeholder='圖片描述'
-                            value={values.imagedes3}
+                            value={values.image3des}
                             onChange={handleChange}
                             onBlur={handleBlur}
                             as="textarea"
@@ -208,6 +216,17 @@ function PostForm() {
                         </InputGroup>
                     </Form.Group>
                 </Row>
+                <Form.Group className="mb-3 fs-5">
+                    <Form.Check
+                    name="urgent"
+                    label="可做為緊急情況參考"
+                    onChange={handleChange}
+                    isInvalid={!!errors.urgent}
+                    feedback={errors.urgent}
+                    feedbackType="invalid"
+                    id="validationFormik0"
+                    />
+                </Form.Group>
 
                 <Row className='justify-content-evenly m-5'>
                     <Col as={Button} sm={5} variant='secondary' onClick={()=>{ navigate(-1)}}>取消</Col>

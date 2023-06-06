@@ -10,9 +10,10 @@ import Form from 'react-bootstrap/Form';
 import Alert from 'react-bootstrap/Alert';
 import { LinkContainer } from 'react-router-bootstrap';
 import MemberImg from "./member icon.svg";
+import apis from './api'
 
 function Layout() {
-  const location = useLocation();
+  const location = useLocation().pathname;
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [loginMessage, setLoginMessage] = useState('');
 
@@ -20,9 +21,9 @@ function Layout() {
     <div>
       <TopNav isLoggedIn={isLoggedIn} setIsLoggedIn={setIsLoggedIn} loginMessage={loginMessage} setLoginMessage={setLoginMessage} />
       <Footer />
-      <TransitionGroup component={null}>
+      <TransitionGroup>
         <CSSTransition
-          timeout={1250}
+          timeout={1000}
           classNames='fade'
           key={location.key}
           unmountOnExit
@@ -105,6 +106,7 @@ function Footer(){
 }
 
 function Member({ setIsLoggedIn, isLoggedIn, setLoginMessage, handleLogout }) {
+  const location = useLocation();
   const [showModal, setShowModal] = useState(false);
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -120,7 +122,7 @@ function Member({ setIsLoggedIn, isLoggedIn, setLoginMessage, handleLogout }) {
 
   const handleLogin = async () => {
     try {
-      const response = await fetch('http://localhost:5000/login', {
+      const response = await fetch(apis.login, {
         //http://localhost:5000/register傳到後端的port做運行
         method: 'POST',
         headers: {
@@ -131,11 +133,12 @@ function Member({ setIsLoggedIn, isLoggedIn, setLoginMessage, handleLogout }) {
 
       if (response.ok) {
         const data = await response.json();
-        if (data.message === '登入成功') {
+        if (data.status === 0) {
           sessionStorage.setItem('isLoggedIn', 'true');
+          sessionStorage.setItem('JWT_TOKEN', data.data.token)
           setIsLoggedIn(true);
           setLoginMessage('登入成功'); // 設定登入成功訊息
-          handleCloseModal();
+          setShowModal(false);
           navigate('/');
         }
       } else {
@@ -152,7 +155,7 @@ function Member({ setIsLoggedIn, isLoggedIn, setLoginMessage, handleLogout }) {
       setIsLoggedIn(true);
       setLoginMessage('登入或貼文上傳成功'); 
     }
-  }, []);
+  }, );
 
   return (
     <Nav>
@@ -167,24 +170,29 @@ function Member({ setIsLoggedIn, isLoggedIn, setLoginMessage, handleLogout }) {
         </>
       )}
       <Modal show={showModal} onHide={handleCloseModal}>
-        <Modal.Header closeButton>
+        <Modal.Header closeButton className='mx-3'>
           <Modal.Title>會員登入</Modal.Title>
         </Modal.Header>
         <Modal.Body>
           <Form>
             <Form.Group controlId="formEmail">
-              <Form.Label>Email:</Form.Label>
+              <Form.Label className='m-3 mt-0'>Email</Form.Label>
               <Form.Control type="email" placeholder="請輸入Email" value={email} onChange={e => setEmail(e.target.value)} />
             </Form.Group>
             <Form.Group controlId="formPassword">
-              <Form.Label>密碼:</Form.Label>
-              <Form.Control type="password" placeholder="請輸入密碼" value={password} onChange={e => setPassword(e.target.value)} />
+              <Form.Label className='m-3'>密碼</Form.Label>
+              <Form.Control className='mb-3' type="password" placeholder="請輸入密碼" value={password} onChange={e => setPassword(e.target.value)} />
             </Form.Group>
           </Form>
         </Modal.Body>
-        <Modal.Footer>
-          <Button variant="secondary" onClick={handleCloseModal}>取消</Button>
-          <Button variant="primary" onClick={handleLogin}>登入</Button>
+        <Modal.Footer className='justify-content-evenly'>
+          {location.pathname.includes('register')
+            ?<Button variant="secondary w-25" onClick={handleCloseModal}>取消</Button>
+            :<Button variant="outline-success w-25" onClick={()=>{
+              navigate('register');
+              setShowModal(false)}}>點此加入</Button>
+          }
+          <Button variant="primary w-25" onClick={handleLogin}>登入</Button>
         </Modal.Footer>
       </Modal>
     </Nav>

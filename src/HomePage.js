@@ -28,6 +28,7 @@ function HomePage(){
     return(
         <div>
             <Description/>
+            <Placeholder/>
             <QuickGuide/>
             <Experience/>
             <Donation/>
@@ -94,7 +95,6 @@ function Display(){
 function QuickGuide(){
     return(
         <Container className='my-5'>
-            <Placeholder/>
             <h2>快速指引</h2>
             
             <Container className='mt-5'>
