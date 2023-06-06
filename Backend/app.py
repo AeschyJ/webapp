@@ -4,7 +4,7 @@ from flask_cors import CORS
 
 app = Flask(__name__)
 # 資料庫連接為webapp的資料夾路徑
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///C:/Users/E/webapp_master_newnew/Backend/Stray_Animals.db'
+app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///C:/Users/E/webapp/Backend/Stray_Animals.db'
 db = SQLAlchemy(app)
 cors = CORS(app)
 
