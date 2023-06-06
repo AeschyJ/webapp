@@ -10,6 +10,41 @@ import os
 
 basePath = sys.path[0]
 BASE_DIR = os.path.abspath(basePath)
+app = Flask(__name__)
+# 資料庫連接為webapp的資料夾路徑
+app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///C:/Users/E/webapp/Backend/Stray_Animals.db'
+db = SQLAlchemy(app)
+cors = CORS(app)
+
+
+class User(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(50), nullable=False)
+    email = db.Column(db.String(100), unique=True, nullable=False)
+    password = db.Column(db.String(100), nullable=False)
+
+
+class Post(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    title = db.Column(db.String(100), nullable=False)
+    content = db.Column(db.Text, nullable=False)
+
+
+@app.route('/register', methods=['POST'])
+def register():
+    form_data = request.get_json()
+    print('表單資料:', form_data)
+
+    name = form_data.get('name')
+    email = form_data.get('email')
+    password = form_data.get('password')
+
+    user = User(name=name, email=email, password=password)
+    db.session.add(user)
+    db.session.commit()
+
+    return jsonify({'message': '註冊成功'})
+
 
 app = Flask(__name__)
 CORS(app, resources={r"/*": {"origins": "*"}})
