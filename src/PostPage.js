@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 
 import Container from 'react-bootstrap/Container';
 import Button from 'react-bootstrap/Button';
@@ -6,6 +6,7 @@ import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import Form from 'react-bootstrap/Form';
 import InputGroup from 'react-bootstrap/InputGroup';
+import { Modal } from 'react-bootstrap';
 import {useNavigate} from 'react-router-dom'
 
 import * as formik from 'formik';
@@ -28,6 +29,17 @@ export default PostPage
 function PostForm() {
     const navigate = useNavigate();
     const { Formik } = formik;
+    const [isLoggedIn, setIsLoggedIn] = useState(false); // 登入狀態
+
+    const [EmdShow, setEmdShow] = useState(false);
+    const [mdShow, setmdShow] = useState(false);
+    
+
+    useEffect(() => {
+      // 在此處檢查登入狀態，例如使用 sessionStorage 或其他方式儲存登入狀態
+      const loggedIn = sessionStorage.getItem('isLoggedIn') === 'true';
+      setIsLoggedIn(loggedIn);
+    }, [isLoggedIn]);
   
     const schema = yup.object().shape({
       title: yup.string().required(),
@@ -44,6 +56,36 @@ function PostForm() {
   
     return (
         <Container>
+            <Modal
+                // size="sm"
+                show={EmdShow}
+                onHide={()=>setmdShow(false)}
+                aria-labelledby="example-modal-sizes-title-sm"
+                className='rounded'
+                backdrop="static"
+                keyboard={false}
+            >
+                <Modal.Header className='bg-danger bg-opacity-50 rounded justify-content-center text-center'>
+                <Modal.Title id="example-modal-sizes-title-sm">
+                    登入逾期/未成功<br/>請重新登入
+                </Modal.Title>
+                </Modal.Header>
+            </Modal>
+            <Modal
+                // size="sm"
+                show={mdShow}
+                onHide={()=>setmdShow(false)}
+                aria-labelledby="example-modal-sizes-title-sm"
+                className='rounded'
+                backdrop="static"
+                keyboard={false}
+            >
+                <Modal.Header className='bg-success bg-opacity-50 rounded justify-content-center text-center'>
+                <Modal.Title id="example-modal-sizes-title-sm">
+                    發表成功
+                </Modal.Title>
+                </Modal.Header>
+            </Modal>
         <Formik
             validationSchema={schema}
             onSubmit={(values)=>{
@@ -51,15 +93,26 @@ function PostForm() {
                 Object.entries(values).forEach((value) => {
                     data.append(value[0],value[1])
                 });
-                // data.append('image1',values.image1)
+                // console.log(data)
                 let headers={'Content-Type': 'multipart/form-data',
                             'Authorization': 'Bearer ' + sessionStorage.getItem('JWT_TOKEN')}
                 axios.post(
                     apis.posts,
                     data,
                     {headers: headers}
-                ).then(navigate(-1)).catch((error)=>
-                    console.log(error)
+                ).then((response)=>{
+                    setmdShow(true);
+                    setTimeout(()=>navigate('/'), 1000)}
+                ).catch((error)=>{
+                    // console.log(error.response.status)
+                    if(error.response.status === 401){
+                        setIsLoggedIn(false);
+                        sessionStorage.removeItem('isLoggedIn');
+                        console.log('Error')
+                        setEmdShow(true);
+                        console.log('show')
+                        setTimeout(()=>navigate('/'), 1500)
+                    }}
                 )
             }}
             initialValues={{
@@ -229,11 +282,13 @@ function PostForm() {
                 </Form.Group>
 
                 <Row className='justify-content-evenly m-5'>
-                    <Col as={Button} sm={5} variant='secondary' onClick={()=>{ navigate(-1)}}>取消</Col>
-                    <Col as={Button} sm={5} type="submit" onClick={()=>{
+                    <Col as={Button} sm={5} variant='secondary' size='lg' onClick={()=>{ navigate(-1)}}>取消</Col>
+                    <Col as={Button} sm={5} type="submit" size='lg' disabled={!isLoggedIn} onClick={()=>{
                         // console.log(!values.image3);
                         // console.log(!!values.imagedes3);
-                    }}>送出</Col>
+                    } }>
+                        {isLoggedIn ? '提交' : '請先登入'}
+                    </Col>
                 </Row>
             </Form>
             )}

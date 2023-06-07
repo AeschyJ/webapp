@@ -13,7 +13,7 @@ import MemberImg from "./member icon.svg";
 import apis from './api'
 
 function Layout() {
-  const location = useLocation().pathname;
+  const Translocation = useLocation();
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [loginMessage, setLoginMessage] = useState('');
 
@@ -25,7 +25,7 @@ function Layout() {
         <CSSTransition
           timeout={1000}
           classNames='fade'
-          key={location.key}
+          key={Translocation.key}
           unmountOnExit
         >
           <Outlet />
@@ -38,12 +38,13 @@ function Layout() {
 function TopNav({ isLoggedIn, setIsLoggedIn, loginMessage, setLoginMessage }) {
   const navigate = useNavigate();
   const [errorMessage, setErrorMessage] = useState('');
+  const [mdShow, setmdShow] = useState(false);
 
   const handleExperienceClick = () => {
     if (!isLoggedIn) {
-      setErrorMessage('請先登入');
+      setmdShow(true);
     } else {
-      navigate('./postform');
+      navigate('postpage');
     }
   };
 
@@ -72,10 +73,10 @@ function TopNav({ isLoggedIn, setIsLoggedIn, loginMessage, setLoginMessage }) {
             <LinkContainer to="quickguide">
               <Nav.Link className='px-4 border-start border-end border-secondary'>快速指引</Nav.Link>
             </LinkContainer>
-            <Nav.Link onClick={handleExperienceClick} className='px-4 border-start border-end border-secondary'>實際案例</Nav.Link>
-            <LinkContainer to="postpage">
-              <Nav.Link className='px-4 border-start border-end border-secondary'>分享經驗</Nav.Link>
+            <LinkContainer to="quickguide">
+              <Nav.Link className='px-4 border-start border-end border-secondary'>實際案例</Nav.Link>
             </LinkContainer>
+              <Nav.Link onClick={handleExperienceClick} className='px-4 border-start border-end border-secondary'>分享經驗</Nav.Link>
           </Nav>
           <Member setIsLoggedIn={setIsLoggedIn} isLoggedIn={isLoggedIn} setLoginMessage={setLoginMessage} handleLogout={handleLogout} />
         </Navbar.Collapse>
@@ -90,6 +91,19 @@ function TopNav({ isLoggedIn, setIsLoggedIn, loginMessage, setLoginMessage }) {
           {loginMessage}
         </Alert>
       )}
+    <Modal
+        size="sm"
+        show={mdShow}
+        onHide={()=>setmdShow(false)}
+        aria-labelledby="example-modal-sizes-title-sm"
+        className='rounded'
+      >
+        <Modal.Header className='bg-danger bg-opacity-50 rounded justify-content-center'>
+          <Modal.Title id="example-modal-sizes-title-sm">
+            請先登入
+          </Modal.Title>
+        </Modal.Header>
+      </Modal>
     </Navbar>
   );
 }
@@ -139,7 +153,7 @@ function Member({ setIsLoggedIn, isLoggedIn, setLoginMessage, handleLogout }) {
           setIsLoggedIn(true);
           setLoginMessage('登入成功'); // 設定登入成功訊息
           setShowModal(false);
-          navigate('/');
+          navigate(0);
         }
       } else {
         console.log('登入失敗');
@@ -155,22 +169,22 @@ function Member({ setIsLoggedIn, isLoggedIn, setLoginMessage, handleLogout }) {
       setIsLoggedIn(true);
       setLoginMessage('登入或貼文上傳成功'); 
     }
-  }, );
+  }, []);
 
   return (
     <Nav>
       {isLoggedIn ? (
         <>
-          <Nav.Link className='px-3' onClick={handleLogout}>登出</Nav.Link>
+          <Nav.Link className='px-3 fs-5' onClick={handleLogout}>登出</Nav.Link>
         </>
       ) : (
         <>
-          <Nav.Link className='px-3' onClick={handleShowModal}>登入</Nav.Link>
-          <Nav.Link className='px-3' onClick={handleRedirect}>註冊</Nav.Link>
+          <Nav.Link className='px-3 fs-5' onClick={handleShowModal}>登入</Nav.Link>
+          <Nav.Link className='px-3 fs-5' onClick={handleRedirect}>註冊</Nav.Link>
         </>
       )}
       <Modal show={showModal} onHide={handleCloseModal}>
-        <Modal.Header closeButton className='mx-3'>
+        <Modal.Header closeButton className='mx-4'>
           <Modal.Title>會員登入</Modal.Title>
         </Modal.Header>
         <Modal.Body>

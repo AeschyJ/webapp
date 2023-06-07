@@ -1,8 +1,9 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { Form, Button, Alert } from 'react-bootstrap';
+import { Form, Button, Alert, Container, Row, Col } from 'react-bootstrap';
 import apis from './api';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
+import Placeholder from './placeholder';
 
 function RegisterForm() {
   const navigate = useNavigate();
@@ -46,10 +47,15 @@ function RegisterForm() {
         ).then((response)=>{
           navigate(-1);
           sessionStorage.setItem('isLoggedIn', 'true');
-          sessionStorage.setItem('JWT_TOKEN', response.data.token)}).catch((error)=>
-            console.log(error)
+          sessionStorage.setItem('JWT_TOKEN', response.data.token)
+          setTimeout(()=>navigate('/'), 1000)}
+          ).catch((error)=>{
+            console.log(error);
+            if(error.response.status === 409){
+              setRegistrationError('發生錯誤，請重試(可能為信箱已使用或名字已使用)'); // Set generic error message
+              setRegistrationSuccess(false); // Set registration success to false
+            }}
         )
-        setTimeout(()=>navigate('/'), 1000)
       } else {
         const data = await response.json();
         setRegistrationError(data.message); // Set registration error message
@@ -77,8 +83,8 @@ function RegisterForm() {
   }, [registrationSuccess, registrationError]);
 
   return (
-    <div>
-      <h1>註冊新帳號</h1>
+    <Container>
+      <h1 className='mt-5 text-center'>註冊新帳號</h1>
       {registrationSuccess && (
         <Alert variant="success">註冊成功</Alert>
       )}
@@ -86,8 +92,8 @@ function RegisterForm() {
         <Alert variant="danger">{registrationError}</Alert>
       )}
       <Form onSubmit={handleSubmit}>
-        <Form.Group controlId="formBasicName">
-          <Form.Label>姓名</Form.Label>
+        <Form.Group controlId="formBasicName" className='my-3'>
+          <Form.Label><h4>姓名</h4></Form.Label>
           <Form.Control
             type="text"
             name="name"
@@ -99,8 +105,8 @@ function RegisterForm() {
           />
         </Form.Group>
 
-        <Form.Group controlId="formBasicEmail">
-          <Form.Label>電子信箱</Form.Label>
+        <Form.Group controlId="formBasicEmail" className='my-3'>
+          <Form.Label><h4>電子信箱</h4></Form.Label>
           <Form.Control
             type="email"
             name="email"
@@ -112,8 +118,8 @@ function RegisterForm() {
           />
         </Form.Group>
 
-        <Form.Group controlId="formBasicPassword">
-          <Form.Label>密碼</Form.Label>
+        <Form.Group controlId="formBasicPassword" className='my-3'>
+          <Form.Label><h4>密碼</h4></Form.Label>
           <Form.Control
             type="password"
             name="password"
@@ -125,8 +131,8 @@ function RegisterForm() {
           />
         </Form.Group>
 
-        <Form.Group controlId="formBasicConfirmPassword">
-          <Form.Label>確認密碼</Form.Label>
+        <Form.Group controlId="formBasicConfirmPassword" className='my-3'>
+          <Form.Label><h4>確認密碼</h4></Form.Label>
           <Form.Control
             type="password"
             name="confirmPassword"
@@ -138,11 +144,16 @@ function RegisterForm() {
           />
         </Form.Group>
 
-        <Button variant="primary" type="submit">
-          註冊
-        </Button>
+        <Row className='justify-content-evenly m-5'>
+            <Col as={Button} sm={5} variant='secondary' size='lg' onClick={()=>{ navigate(-1)}}>取消</Col>
+            <Col as={Button} sm={5} type="submit" size='lg' onClick={()=>{
+                // console.log(!values.image3);
+                // console.log(!!values.imagedes3);
+            }}>送出</Col>
+        </Row>
       </Form>
-    </div>
+      <Placeholder/>
+    </Container>
   );
 }
 

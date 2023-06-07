@@ -28,8 +28,8 @@ class Post(Resource):
             form[image] = request.files.get(image, None)
             if(form[image] is None): 
                 images.remove(image)
-                print(image)
-                print(images)
+                # print(image)
+                # print(images)
         
         # print(images)
         # print(form)
@@ -59,7 +59,7 @@ class Post(Resource):
                                      409)
         except Exception as e:
             conn.rollback()
-            response = make_response(jsonify({"status": -1,
+            response = make_response(jsonify({"status": -10,
                                               "message": str(e), }),
                                      500)
         finally:
@@ -67,3 +67,32 @@ class Post(Resource):
 
         return response
         
+
+    def get(self, postId):
+        get_post_view()
+        pass
+
+
+    class newest(Resource):
+        def get(self, urgent):
+            response = make_response(jsonify({"status": 0,
+                                              "message": 'received',
+                                               "data": get_newest_post(urgent) }),
+                                     200)
+            return response
+            
+    
+    class easyview(Resource):
+        def get(self, id):
+            view = get_post_easyview(id)
+            if view is None:
+                response = make_response(jsonify({"status": -1,
+                                                "message": 'no post',
+                                                "data": None }),
+                                        400)
+            else:
+                response = make_response(jsonify({"status": 0,
+                                                "message": 'received',
+                                                "data": view }),
+                                        200)
+            return response
