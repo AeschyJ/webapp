@@ -73,9 +73,9 @@ function TopNav({ isLoggedIn, setIsLoggedIn, loginMessage, setLoginMessage }) {
             <LinkContainer to="quickguide">
               <Nav.Link className='px-4 border-start border-end border-secondary'>快速指引</Nav.Link>
             </LinkContainer>
-            <LinkContainer to="quickguide">
-              <Nav.Link className='px-4 border-start border-end border-secondary'>實際案例</Nav.Link>
-            </LinkContainer>
+            {/* <LinkContainer to="quickguide"> */}
+              {/* <Nav.Link className='px-4 border-start border-end border-secondary'>實際案例</Nav.Link> */}
+            {/* </LinkContainer> */}
               <Nav.Link onClick={handleExperienceClick} className='px-4 border-start border-end border-secondary'>分享經驗</Nav.Link>
           </Nav>
           <Member setIsLoggedIn={setIsLoggedIn} isLoggedIn={isLoggedIn} setLoginMessage={setLoginMessage} handleLogout={handleLogout} />

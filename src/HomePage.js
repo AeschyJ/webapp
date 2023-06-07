@@ -196,7 +196,7 @@ function ShowExperience(props){
             </Container>
 
             <Container className='justify-content-center d-flex my-5'>
-                <Pagination>
+                {/* <Pagination>
                     <Pagination.First />
                     <Pagination.Prev />
                     <Pagination.Item>{1}</Pagination.Item>
@@ -212,7 +212,7 @@ function ShowExperience(props){
                     <Pagination.Item>{20}</Pagination.Item>
                     <Pagination.Next />
                     <Pagination.Last />
-                </Pagination>
+                </Pagination> */}
             </Container>
         </div>
     );
