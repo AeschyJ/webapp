@@ -31,7 +31,8 @@ api.add_resource(user.User.SignIn, "/api/users/signIn")
 api.add_resource(user.User.Me, "/api/users/me")
 
 api.add_resource(post.Post, "/api/posts")
-api.add_resource(post.Post.newest, '/api/posts/newest/<urgent>')
+api.add_resource(post.Post.newest, '/api/posts/newest/<urgent>/<int:page>')
+api.add_resource(post.Post.numbers, '/api/posts/numbers')
 api.add_resource(post.Post.easyview, "/api/posts/easyview/<int:id>")
 
 
@@ -44,6 +45,7 @@ def get_route():
     # # print(os.path.join(BASE_DIR,'index.html'))
     # # print(general.get_img_num())
     # return render_template('index.html', img=img)
+
     import sqlite3
     user={}
     try:
