@@ -1,19 +1,22 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
+import { useNavigate, useParams } from 'react-router-dom';
+import {format} from 'date-fns'
 
 import Container from 'react-bootstrap/Container';
-import Stack from 'react-bootstrap/Stack';
 import Card from 'react-bootstrap/Card';
 import Button from 'react-bootstrap/Button';
 import Carousel from 'react-bootstrap/Carousel';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
-import Pagination from 'react-bootstrap/Pagination';
 import ListGroup from 'react-bootstrap/ListGroup';
+import Modal from 'react-bootstrap/Modal';
 
 import { LinkContainer } from 'react-router-bootstrap';
 
 import "./HomePage.css";
 import Placeholder from './placeholder';
+import Fetch from './Fetch';
+import apis from './api';
 
 import Shetland from "./img/dog-shetland-sheepdog-collie-sheltie-royalty-free-image-491206081-1565123992.jpg";
 import Golden from "./img/golden-retriever-royalty-free-image-506756303-1560962726.jpg"
@@ -22,8 +25,7 @@ import Cat from "./img/QGCat/cat.jpg";
 import Dog from "./img/QGdog/dog.png";
 import Bird from "./img/QGbird/bird.jpg";
 import Donate from "./img/donate.jpg"
-import Fetch from './Fetch';
-import apis from './api';
+
 
 var basename="/WEBAPP/React/build/"
 function HomePage(){
@@ -154,16 +156,23 @@ function QuickGuide(){
 export {QuickGuide};
 
 function Experience(){
+    const navigate = useNavigate()
+    const [mdShow, setmdShow] = useState(false);
+    const handleExperienceClick = () => {
+        if (sessionStorage.getItem('isLoggedIn')=== 'true') {
+            navigate(`${basename}postpage`);
+        } else {
+            setmdShow(true);
+        }
+      };
     return(
         <>
             <Placeholder/>
-            <LinkContainer to={basename+'postpage'}>
                 <div className="d-grid gap-2 w-50 my-3 mx-auto">
-                    <Button variant="dark" size="lg">
+                    <Button variant="dark" size="lg" onClick={handleExperienceClick}>
                         我來分享
                     </Button>
                 </div>
-            </LinkContainer>
             <Placeholder/>
             <Container className='my-3'>
                 <h2>緊急處置經驗</h2>
@@ -173,27 +182,56 @@ function Experience(){
                 <h2>其他處置經驗</h2>
             </Container>
             <ShowExperience urgent='false'/>
+            <Modal
+                size="sm"
+                show={mdShow}
+                onHide={()=>setmdShow(false)}
+                aria-labelledby="example-modal-sizes-title-sm"
+                className='rounded'
+            >
+                <Modal.Header className='bg-danger bg-opacity-50 rounded justify-content-center'>
+                <Modal.Title id="example-modal-sizes-title-sm">
+                    請先登入
+                </Modal.Title>
+                </Modal.Header>
+            </Modal>
         </>
     );
 }
+function ExperienceAll(){
+    return(
+        <>
+            <Placeholder/>
+            <Container className='my-3'>
+                <h2 className='text-center'>處置經驗分享</h2>
+            </Container>
+            <ShowExperience page={1}/>
+            <Placeholder/>
+        </>
+    );
+}export {ExperienceAll}
 
 function ShowExperience(props){
     let api = ''
     if(props.urgent === 'true'){
         api = apis.newest.urgent
-    }else{
+    }else if(props.urgent === 'false'){
         api = apis.newest.normal
+    }else{
+        api = `${apis.newest.all}/${props.page}`
     }
     const [data, loading, error, cards] = Fetch(api);
+    console.log(loading)
     if(error){
         console.log(data, loading, error, cards)
     }
     return(
         <div>
             <Container className='my-5'>
-                <Row className='px-auto gy-3 justify-content-evenly'>
+                <Row className='px-auto gy-4 justify-content-evenly'>
                     {loading ? <div>loading</div> : 
-                        <ExperienceCard dataArray={cards.slice(0,4)} postIds={data}></ExperienceCard>
+                        <ExperienceCard dataArray={api.includes(apis.newest.all) ? cards :
+                            cards.slice(0,4)} postIds={data}></ExperienceCard>
                         // <Container className='my-5'>
                         //     <Row className='px-auto gy-3'>
                                 // <Col sm className='justify-content-center d-flex col-md-3'>
@@ -236,7 +274,7 @@ function ExperienceCard(props){
                             <Button variant="outline-secondary">全文</Button>
                         </LinkContainer>
                     </ListGroup.Item>
-                    <ListGroup.Item>{data.updateDate}</ListGroup.Item>
+                    <ListGroup.Item>{format(new Date(data.updateDate), "yyyy-MM-dd")}</ListGroup.Item>
                 </ListGroup>
                 </Card>
             </Col>

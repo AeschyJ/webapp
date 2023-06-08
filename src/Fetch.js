@@ -22,8 +22,6 @@ function Fetch(url) {
                     setError(error)
                 }
                 setLoading(false);
-            }else{
-                setLoading(false);
             }
         }
         const fetchData = async()=>{
@@ -34,6 +32,9 @@ function Fetch(url) {
             }
             catch(error){
                 setError(error)
+            }
+            finally{
+                setLoading(true)
             }
         }
         

@@ -151,7 +151,7 @@ def get_newest_post(urgent, page):
         print(e)
         ids = []
 
-    return ids[(10 * (page-1)) : 10]
+    return ids[(12 * (page - 1)) : (12 * (page - 1)) + 12]
 
 
 def get_post(id):

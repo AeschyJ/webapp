@@ -2,7 +2,7 @@ import {Routes, Route, Navigate} from 'react-router-dom';
 
 import './App.css';
 import './index.css'
-import HomePage, {QuickGuide} from './HomePage';
+import HomePage, {QuickGuide, ExperienceAll} from './HomePage';
 import Layout from './Layout';
 import QGBird from './QGBird';
 import QGCat from './QGCat';
@@ -23,6 +23,10 @@ function App() {
           <Route path="bird" element={<QGBird/>} />
           <Route path="cat" element={<QGCat/>} />
           <Route path="dog" element={<QGDog/>} />
+        </Route>
+        <Route path='posts'>
+          <Route index element={<ExperienceAll/>}/>
+          <Route path=':id' element={<QGBird/>}/>
         </Route>
         <Route path="postpage" element={<PostPage/>} />
         <Route path="register" element={<RegisterForm />} />
