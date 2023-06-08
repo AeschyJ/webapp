@@ -9,5 +9,6 @@ const apis = {
         normal: Prefix + 'posts/newest/false/1',
     },
     easyview: Prefix + 'posts/easyview',
+    postNum: Prefix + 'posts/numbers'
 }
 export default apis

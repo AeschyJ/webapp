@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import {format} from 'date-fns'
 
@@ -10,12 +10,13 @@ import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import ListGroup from 'react-bootstrap/ListGroup';
 import Modal from 'react-bootstrap/Modal';
+import Pagination from 'react-bootstrap/Pagination';
 
 import { LinkContainer } from 'react-router-bootstrap';
 
 import "./HomePage.css";
 import Placeholder from './placeholder';
-import Fetch from './Fetch';
+import Fetch, { Total } from './Fetch';
 import apis from './api';
 
 import Shetland from "./img/dog-shetland-sheepdog-collie-sheltie-royalty-free-image-491206081-1565123992.jpg";
@@ -25,9 +26,9 @@ import Cat from "./img/QGCat/cat.jpg";
 import Dog from "./img/QGdog/dog.png";
 import Bird from "./img/QGbird/bird.jpg";
 import Donate from "./img/donate.jpg"
+import axios from 'axios';
 
 
-var basename="/WEBAPP/React/build/"
 function HomePage(){
     return(
         <div>
@@ -104,7 +105,7 @@ function QuickGuide(){
             <Container className='mt-5'>
                 <Row className='px-auto g-3'>
                     <Col sm className='justify-content-center d-flex'>
-                        <LinkContainer to={basename+'quickguide/dog'} style={{ width: '18rem' , height:'20rem'}}>
+                        <LinkContainer to='../quickguide/dog' style={{ width: '18rem' , height:'20rem'}}>
                             <Card className='card position-relative'>
                                 <Card.Img 
                                 className='QGcardimage'
@@ -118,7 +119,7 @@ function QuickGuide(){
                         </LinkContainer>
                     </Col>
                     <Col sm className='justify-content-center d-flex'> 
-                        <LinkContainer to={basename+'quickguide/cat'} style={{ width: '18rem' , height:'20rem'}}>
+                        <LinkContainer to='../quickguide/cat' style={{ width: '18rem' , height:'20rem'}}>
                             <Card className='card position-relative'>
                                 <Card.Img 
                                 className='QGcardimage'
@@ -132,7 +133,7 @@ function QuickGuide(){
                         </LinkContainer>
                     </Col>
                     <Col sm className='justify-content-center d-flex'>
-                        <LinkContainer to={basename+'quickguide/bird'} style={{ width: '18rem' , height:'20rem'}}>
+                        <LinkContainer to='../quickguide/bird' style={{ width: '18rem' , height:'20rem'}}>
                             <Card className='card position-relative'>
                                 <Card.Img 
                                 className='QGcardimage'
@@ -160,7 +161,7 @@ function Experience(){
     const [mdShow, setmdShow] = useState(false);
     const handleExperienceClick = () => {
         if (sessionStorage.getItem('isLoggedIn')=== 'true') {
-            navigate(`${basename}postpage`);
+            navigate(`../postpage`);
         } else {
             setmdShow(true);
         }
@@ -174,12 +175,20 @@ function Experience(){
                     </Button>
                 </div>
             <Placeholder/>
-            <Container className='my-3'>
-                <h2>緊急處置經驗</h2>
+            <Container className='my-3 '>
+                <h2 className='justify-content-between d-flex'>緊急處置經驗
+                    <LinkContainer to='../posts'>
+                        <Button variant="outline-info" className='px-5'>更多</Button>
+                    </LinkContainer>
+                </h2>
             </Container>
             <ShowExperience urgent='true'/>
             <Container className='my-3'>
-                <h2>其他處置經驗</h2>
+                <h2 className='justify-content-between d-flex'>其他處置經驗
+                    <LinkContainer to='../posts'>
+                        <Button variant="outline-info" className='px-5'>更多</Button>
+                    </LinkContainer>
+                </h2>
             </Container>
             <ShowExperience urgent='false'/>
             <Modal
@@ -199,13 +208,92 @@ function Experience(){
     );
 }
 function ExperienceAll(){
+    const [page, setPage] = useState(1)
+    const [active ,setActive] = useState(1)
+    const [showPages, setShowPage] = useState([2,3])
+    const [omit, setOmit] = useState({
+        before: false,
+        after: false
+    })
+
+    // const pages = Total()
+    const pages = 10;
+    useEffect(()=>{
+    if(pages > 5){
+        setShowPage([2,3]);
+        setOmit(prevOmit=>({...prevOmit, after: true}))
+    }else{
+        let a = []
+        for(let i = 2; i < pages; i++){
+            a.push(i);
+        }
+        setShowPage(a);
+    }},[])
+    
+    const handlePage = (p) =>{
+        setActive(p)
+        setPage(p)
+        if(pages > 5){
+            let arr = []
+            for(let i = p-2; i <= p + 2; i++){
+                if(i > 1 && i < pages){
+                    arr.push(i);
+                }
+            }
+            if(arr[0]>2){
+                setOmit(prevOmit=>({...prevOmit, before: true}))
+                setOmit(prevOmit=>({...prevOmit, after: false}))
+                if(arr[arr.length-1]<pages-1){
+                    console.log(arr[arr.length-1],pages-1)
+                    setOmit(prevOmit=>({...prevOmit, after: true}))
+                }
+            }else if(arr[arr.length-1]<pages-1){
+                setOmit(prevOmit=>({...prevOmit, before: false}))
+                setOmit(prevOmit=>({...prevOmit, after: true}))
+            }else{
+                setOmit(prevOmit=>({...prevOmit, before: false}))
+                setOmit(prevOmit=>({...prevOmit, after: false}))
+            }
+        setShowPage(arr)
+        }
+    }
+    console.log(omit)
+
+    let items = [];
+    items.push(
+        <Pagination.Item key={'pagitem'+1} active={1 === active} onClick={()=>handlePage(1)}>
+            1
+        </Pagination.Item>,)
+    if(omit.before){items.push(<Pagination.Ellipsis/>)}
+    showPages.forEach((number)=> {
+        items.push(
+            <Pagination.Item key={'pagitem'+number} active={number === active} onClick={()=>handlePage(number)}>
+                {number}
+            </Pagination.Item>,
+        );
+    })
+    if(omit.after){items.push(<Pagination.Ellipsis/>)}
+    items.push(
+        <Pagination.Item key={'pagitem'+pages} active={pages === active} onClick={()=>handlePage(pages)}>
+            {pages}
+        </Pagination.Item>,)
+    const paginationBasic = (
+    <div>
+        <Pagination>{items}</Pagination>
+        <br />
+    </div>
+    );
+
     return(
         <>
             <Placeholder/>
             <Container className='my-3'>
                 <h2 className='text-center'>處置經驗分享</h2>
             </Container>
-            <ShowExperience page={1}/>
+            <ShowExperience page={page}/>
+            <Container className='my-3 d-flex justify-content-center'>
+                {paginationBasic}
+            </Container>
             <Placeholder/>
         </>
     );
@@ -221,7 +309,6 @@ function ShowExperience(props){
         api = `${apis.newest.all}/${props.page}`
     }
     const [data, loading, error, cards] = Fetch(api);
-    console.log(loading)
     if(error){
         console.log(data, loading, error, cards)
     }
@@ -230,8 +317,7 @@ function ShowExperience(props){
             <Container className='my-5'>
                 <Row className='px-auto gy-4 justify-content-evenly'>
                     {loading ? <div>loading</div> : 
-                        <ExperienceCard dataArray={api.includes(apis.newest.all) ? cards :
-                            cards.slice(0,4)} postIds={data}></ExperienceCard>
+                        <ExperienceCard dataArray={cards} postIds={data}></ExperienceCard>
                         // <Container className='my-5'>
                         //     <Row className='px-auto gy-3'>
                                 // <Col sm className='justify-content-center d-flex col-md-3'>
@@ -265,12 +351,12 @@ function ExperienceCard(props){
                 <Card className='expcard' style={{ width: '15rem' }}>
                 <Card.Img variant="top" src={data.image} className='cardimage'/>
                 <Card.Body>
-                    <Card.Title>{data.title}</Card.Title>
-                    <Card.Text>{data.content}</Card.Text>
+                    <Card.Title>{data.title.length > 10 ? `${data.title.slice(0,10)}...`: data.title}</Card.Title>
+                    <Card.Text>{data.content.length > 50 ? `${data.content.slice(0,50)}...`: data.content}</Card.Text>
                 </Card.Body>
                 <ListGroup className="list-group-flush">
                     <ListGroup.Item>
-                        <LinkContainer to={`${basename}posts/${props.postIds[idx]}`}>
+                        <LinkContainer to={`../posts/full/${props.postIds[idx]}`}>
                             <Button variant="outline-secondary">全文</Button>
                         </LinkContainer>
                     </ListGroup.Item>

@@ -26,7 +26,7 @@ function App() {
         </Route>
         <Route path='posts'>
           <Route index element={<ExperienceAll/>}/>
-          <Route path=':id' element={<QGBird/>}/>
+          <Route path='full/:id' element={<QGBird/>}/>
         </Route>
         <Route path="postpage" element={<PostPage/>} />
         <Route path="register" element={<RegisterForm />} />

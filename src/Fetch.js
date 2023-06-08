@@ -12,6 +12,7 @@ function Fetch(url) {
         const fetchCard = async()=>{
             if(data.length !==0){
                 setLoading(true);
+                setCard([])
                 try{
                     data.forEach(async(postId)=> {
                         const response = await axios.get(apis.easyview + `/${postId}`)
@@ -47,3 +48,19 @@ function Fetch(url) {
     return [data, loading, error, cards]
 }
 export default Fetch
+
+function Total(){
+    const [pages, setPages] = useState(1)
+    useEffect(()=>{
+        const run = async()=>{
+            try{
+                const response = await axios.get(apis.postNum)
+                setPages(Math.ceil(response.data.data / 12))
+            }catch(error){
+                console.log(error)
+            }
+        }
+        run()
+    },[pages])
+    return pages
+}export {Total}
