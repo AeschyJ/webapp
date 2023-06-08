@@ -114,17 +114,32 @@ def return_img_stream(img_local_path):
 #     image = cv2.imencode('com.jpg',img_resize)[1]
 #     img_stream = base64head + base64.b64encode(image).decode()
 #     return img_stream
+def get_post_num():
+    ids = []
+    try:
+        conn = connect_to_db()
+        conn.row_factory = sqlite3.Row
+        cur = conn.cursor()
+        cur.execute("SELECT id FROM posts")
+        row = cur.fetchall()
+
+        for item in row:
+            ids.append(item[0])
+    except Exception as e:
+        print(e)
+        ids = []
+
+    return len(ids)
 
 
-def get_newest_post(urgent):
-    # print(urgent)
+def get_newest_post(urgent, page):
     ids = []
     try:
         conn = connect_to_db()
         conn.row_factory = sqlite3.Row
         cur = conn.cursor()
         if urgent == 'none':
-            cur.execute("SELECT * FROM posts ORDER BY id DESC LIMIT 4")
+            cur.execute("SELECT * FROM posts ORDER BY id DESC")
             row = cur.fetchall()
         else:
             cur.execute("SELECT * FROM posts WHERE urgent = ? ORDER BY id DESC LIMIT 4",(urgent,))
@@ -136,7 +151,7 @@ def get_newest_post(urgent):
         print(e)
         ids = []
 
-    return ids
+    return ids[(10 * (page-1)) : 10]
 
 
 def get_post(id):

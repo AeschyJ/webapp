@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 
 import Container from 'react-bootstrap/Container';
 import Stack from 'react-bootstrap/Stack';
@@ -22,6 +22,8 @@ import Cat from "./img/QGCat/cat.jpg";
 import Dog from "./img/QGdog/dog.png";
 import Bird from "./img/QGbird/bird.jpg";
 import Donate from "./img/donate.jpg"
+import Fetch from './Fetch';
+import apis from './api';
 
 var basename="/WEBAPP/React/build/"
 function HomePage(){
@@ -166,53 +168,50 @@ function Experience(){
             <Container className='my-3'>
                 <h2>緊急處置經驗</h2>
             </Container>
-            <ShowExperience/>
+            <ShowExperience urgent='true'/>
             <Container className='my-3'>
                 <h2>其他處置經驗</h2>
             </Container>
-            <ShowExperience/>
+            <ShowExperience urgent='false'/>
         </>
     );
 }
 
 function ShowExperience(props){
+    let api = ''
+    if(props.urgent === 'true'){
+        api = apis.newest.urgent
+    }else{
+        api = apis.newest.normal
+    }
+    const [data, loading, error, cards] = Fetch(api);
+    if(error){
+        console.log(data, loading, error, cards)
+    }
     return(
         <div>
             <Container className='my-5'>
-                <Row className='px-auto gy-3'>
-                    <Col sm className='justify-content-center d-flex col-md-3'>
-                        <ExperienceCard src={Shetland} title='Title1' content='content' date='date' link=''/>
-                    </Col>
-                    <Col sm className='justify-content-center d-flex col-md-3'> 
-                        <ExperienceCard src={Golden} title='Title2' content='content' date='date' link=''/>
-                    </Col>
-                    <Col sm className='justify-content-center d-flex col-md-3'>
-                        <ExperienceCard src={Samoyed} title='Title3' content='content' date='date' link=''/>
-                    </Col>
-                    <Col sm className='justify-content-center d-flex col-md-3'>
-                        <ExperienceCard src={Shetland} title='Title4' content='content' date='date' link=''/>
-                    </Col>
+                <Row className='px-auto gy-3 justify-content-evenly'>
+                    {loading ? <div>loading</div> : 
+                        <ExperienceCard dataArray={cards.slice(0,4)} postIds={data}></ExperienceCard>
+                        // <Container className='my-5'>
+                        //     <Row className='px-auto gy-3'>
+                                // <Col sm className='justify-content-center d-flex col-md-3'>
+                                //     <ExperienceCard src={Shetland} title='Title1' content='content' date='date' link=''/>
+                                // </Col>
+                                // <Col sm className='justify-content-center d-flex col-md-3'> 
+                                //     <ExperienceCard src={Golden} title='Title2' content='content' date='date' link=''/>
+                                // </Col>
+                                // <Col sm className='justify-content-center d-flex col-md-3'>
+                                //     <ExperienceCard src={Samoyed} title='Title3' content='content' date='date' link=''/>
+                                // </Col>
+                                // <Col sm className='justify-content-center d-flex col-md-3'>
+                                //     <ExperienceCard src={Shetland} title='Title4' content='content' date='date' link=''/>
+                                // </Col>
+                        //     </Row>
+                        // </Container>
+                    }
                 </Row>
-            </Container>
-
-            <Container className='justify-content-center d-flex my-5'>
-                {/* <Pagination>
-                    <Pagination.First />
-                    <Pagination.Prev />
-                    <Pagination.Item>{1}</Pagination.Item>
-                    <Pagination.Ellipsis />
-
-                    <Pagination.Item>{10}</Pagination.Item>
-                    <Pagination.Item>{11}</Pagination.Item>
-                    <Pagination.Item active>{12}</Pagination.Item>
-                    <Pagination.Item>{13}</Pagination.Item>
-                    <Pagination.Item disabled>{14}</Pagination.Item>
-
-                    <Pagination.Ellipsis />
-                    <Pagination.Item>{20}</Pagination.Item>
-                    <Pagination.Next />
-                    <Pagination.Last />
-                </Pagination> */}
             </Container>
         </div>
     );
@@ -220,21 +219,29 @@ function ShowExperience(props){
 
 function ExperienceCard(props){
     return (
-        <Card className='expcard' style={{ width: '15rem' }}>
-          <Card.Img variant="top" src={props.src} className='cardimage'/>
-          <Card.Body>
-            <Card.Title>{props.title}</Card.Title>
-            <Card.Text>{props.content}</Card.Text>
-          </Card.Body>
-          <ListGroup className="list-group-flush">
-            <ListGroup.Item>
-                <LinkContainer to={basename + props.link}>
-                    <Button variant="outline-secondary">全文</Button>
-                </LinkContainer>
-            </ListGroup.Item>
-            <ListGroup.Item>{props.date}</ListGroup.Item>
-          </ListGroup>
-        </Card>
+        <>
+        {props.dataArray.length === 0 
+        ? <h3 className='text-center text-danger opacity-75'>暫時找不到案例</h3>
+        : props.dataArray.map((data,idx)=>
+            <Col sm className='justify-content-center d-flex col-md-3' key={data.title + idx}>
+                <Card className='expcard' style={{ width: '15rem' }}>
+                <Card.Img variant="top" src={data.image} className='cardimage'/>
+                <Card.Body>
+                    <Card.Title>{data.title}</Card.Title>
+                    <Card.Text>{data.content}</Card.Text>
+                </Card.Body>
+                <ListGroup className="list-group-flush">
+                    <ListGroup.Item>
+                        <LinkContainer to={`${basename}posts/${props.postIds[idx]}`}>
+                            <Button variant="outline-secondary">全文</Button>
+                        </LinkContainer>
+                    </ListGroup.Item>
+                    <ListGroup.Item>{data.updateDate}</ListGroup.Item>
+                </ListGroup>
+                </Card>
+            </Col>
+        )}
+        </>
       );
 }
 

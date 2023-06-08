@@ -3,9 +3,11 @@ const apis = {
     users: Prefix + 'users',
     posts: Prefix + 'posts',
     login: Prefix + 'users/signIn',
-    newest: Prefix + 'posts/newest/none',
-    urgentNewest: Prefix + 'posts/newest/true',
-    normalNewest: Prefix + 'posts/newest/false',
+    newest:{
+        all: Prefix + 'posts/newest/none',
+        urgent: Prefix + 'posts/newest/true/1',
+        normal: Prefix + 'posts/newest/false/1',
+    },
     easyview: Prefix + 'posts/easyview',
 }
 export default apis

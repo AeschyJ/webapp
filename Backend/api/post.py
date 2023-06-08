@@ -74,10 +74,18 @@ class Post(Resource):
 
 
     class newest(Resource):
-        def get(self, urgent):
+        def get(self, urgent, page):
             response = make_response(jsonify({"status": 0,
                                               "message": 'received',
-                                               "data": get_newest_post(urgent) }),
+                                               "data": get_newest_post(urgent, page) }),
+                                     200)
+            return response
+    
+    class numbers(Resource):
+        def get(self):
+            response = make_response(jsonify({"status": 0,
+                                              "message": 'received',
+                                               "data": get_post_num() }),
                                      200)
             return response
             
