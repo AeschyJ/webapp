@@ -1,7 +1,7 @@
 import sqlite3
 import sys
 import os
-# import cv2
+from datetime import datetime
 
 basePath = sys.path[0]
 BASE_DIR = os.path.abspath(basePath)
@@ -160,49 +160,10 @@ def get_post(id):
             "location",
             "title",
             "content",
-            "uploadDate",
             "updateDate",
             "urgent"
         ]
     post = {}
-    try:
-        conn = connect_to_db()
-        conn.row_factory = sqlite3.Row
-        cur = conn.cursor()
-        cur.execute("SELECT * FROM posts WHERE id = ?",
-                    (id,))
-        row = cur.fetchone()
-
-        for index, item in enumerate(schema):
-            post[item] = row[index]
-
-    except Exception as e:
-        print(e)
-        post = {}
-
-    return post
-
-
-def get_post_easyview(id):
-    schema = ["id",
-            "userId",
-            "location",
-            "title",
-            "content",
-            "uploadDate",
-            "updateDate",
-            "urgent"
-        ]
-    viewNeed = ["username",
-            "location",
-            "title",
-            "content",
-            "updateDate",
-            "urgent",
-            "image"
-        ]
-    post = {}
-    view = {}
     try:
         conn = connect_to_db()
         conn.row_factory = sqlite3.Row
@@ -211,49 +172,60 @@ def get_post_easyview(id):
         row = cur.fetchone()
         if row is None:
             return None
-        
         else:
             for index, item in enumerate(schema):
                 post[item] = row[index]
-            for item in viewNeed:
-                if item in post:
-                    view[item] = post[item]
-            view['username'] = get_user_by_id(post['userId'])['name']
-            view['image'] = get_photo_by_post(id, 1)
             
     except Exception as e:
         print(e)
-        view = {}
+        post = {}
+
+    return post
+
+
+def get_post_easyview(id):
+    viewNeed = ["title",
+            "content",
+            "updateDate",
+            "urgent",
+            "image"
+        ]
+    post = get_post(id)
+    view = {}
+    if post is None:
+        return None
+    else:
+        for item in viewNeed:
+            if item in post:
+                view[item] = post[item]
+        view['image'] = get_photo_by_post(id, 1)
 
     return view
 
 
 
 def get_post_view(id):
-    schema = ["id",
-            "userId",
+    viewNeed = ["userId",
+            "username",
             "location",
             "title",
             "content",
-            "uploadDate",
             "updateDate",
-            "urgent"
+            "urgent",
+            "images"
         ]
-    post = {}
-    try:
-        conn = connect_to_db()
-        conn.row_factory = sqlite3.Row
-        cur = conn.cursor()
-        cur.execute("SELECT * FROM posts ORDER BY id DESC")
-        row = cur.fetchone()
+    post = get_post(id)
+    view = {}
+    if post is None:
+        return None
+    else:
+        for item in viewNeed:
+            if item in post:
+                view[item] = post[item]
+        view['username'] = get_user_by_id(post['userId'])['name']
+        view['images'] = get_photo_by_post(id)
 
-        for index, item in enumerate(schema):
-            post[item] = row[index]
-    except Exception as e:
-        print(e)
-        post = {}
-
-    return post
+    return view
 
 
 def get_photo(id):
@@ -277,7 +249,7 @@ def get_photo(id):
     return photo
 
 
-def get_photo_by_post(postId, num):
+def get_photo_by_post(postId, num=0):
     photo = {}
     photos = []
     try:

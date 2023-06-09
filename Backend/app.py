@@ -31,6 +31,7 @@ api.add_resource(user.User.SignIn, "/api/users/signIn")
 api.add_resource(user.User.Me, "/api/users/me")
 
 api.add_resource(post.Post, "/api/posts")
+api.add_resource(post.Post, "/api/posts/<int:postId>", endpoint="get-post")
 api.add_resource(post.Post.newest, '/api/posts/newest/<urgent>/<int:page>')
 api.add_resource(post.Post.numbers, '/api/posts/numbers')
 api.add_resource(post.Post.easyview, "/api/posts/easyview/<int:id>")

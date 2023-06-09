@@ -10,6 +10,7 @@ import QGDog from './QGDog';
 import PostPage from './PostPage';
 import RegisterForm from './RegisterForm';
 import Postform from './Postform';
+import Post from './FullPost';
 
 
 function App() {
@@ -26,7 +27,7 @@ function App() {
         </Route>
         <Route path='posts'>
           <Route index element={<ExperienceAll/>}/>
-          <Route path='full/:id' element={<QGBird/>}/>
+          <Route path=':id' element={<Post/>}/>
         </Route>
         <Route path="postpage" element={<PostPage/>} />
         <Route path="register" element={<RegisterForm />} />

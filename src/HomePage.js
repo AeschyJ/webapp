@@ -216,8 +216,7 @@ function ExperienceAll(){
         after: false
     })
 
-    // const pages = Total()
-    const pages = 10;
+    const pages = Total()
     useEffect(()=>{
     if(pages > 5){
         setShowPage([2,3]);
@@ -257,7 +256,6 @@ function ExperienceAll(){
         setShowPage(arr)
         }
     }
-    console.log(omit)
 
     let items = [];
     items.push(
@@ -273,10 +271,11 @@ function ExperienceAll(){
         );
     })
     if(omit.after){items.push(<Pagination.Ellipsis/>)}
+    if(pages!==1){
     items.push(
         <Pagination.Item key={'pagitem'+pages} active={pages === active} onClick={()=>handlePage(pages)}>
             {pages}
-        </Pagination.Item>,)
+        </Pagination.Item>,)}
     const paginationBasic = (
     <div>
         <Pagination>{items}</Pagination>
@@ -351,12 +350,15 @@ function ExperienceCard(props){
                 <Card className='expcard' style={{ width: '15rem' }}>
                 <Card.Img variant="top" src={data.image} className='cardimage'/>
                 <Card.Body>
-                    <Card.Title>{data.title.length > 10 ? `${data.title.slice(0,10)}...`: data.title}</Card.Title>
+                    <Card.Title className='d-inline-flex align-items-center'>
+                        {data.title.length > 10 ? `${data.title.slice(0,10)}...`: data.title}
+                        {data.urgent === 'true' ? <div className='text-danger fst-italic mx-3' style={{fontSize:"12px"}}>*緊急</div>:<div className=''></div>}
+                    </Card.Title>
                     <Card.Text>{data.content.length > 50 ? `${data.content.slice(0,50)}...`: data.content}</Card.Text>
                 </Card.Body>
                 <ListGroup className="list-group-flush">
                     <ListGroup.Item>
-                        <LinkContainer to={`../posts/full/${props.postIds[idx]}`}>
+                        <LinkContainer to={`../posts/${props.postIds[idx]}`}>
                             <Button variant="outline-secondary">全文</Button>
                         </LinkContainer>
                     </ListGroup.Item>

@@ -67,10 +67,22 @@ class Post(Resource):
 
         return response
         
+    # date = datetime.today()
+    # print(date.strftime('%Y-%m-%d %H:%M:%S'))
 
     def get(self, postId):
-        get_post_view()
-        pass
+            view = get_post_view(postId)
+            if view is None:
+                response = make_response(jsonify({"status": -1,
+                                                "message": 'no post',
+                                                "data": None }),
+                                        400)
+            else:
+                response = make_response(jsonify({"status": 0,
+                                                "message": 'received',
+                                                "data": view }),
+                                        200)
+            return response
 
 
     class newest(Resource):
