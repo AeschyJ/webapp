@@ -27,6 +27,7 @@ function Fetch() {
             try{
                 const url = apis.posts + `/${param.id}`
                 const response = await axios.get(url)
+                console.log('res',response.data)
                 setPost(response.data.data)
             }catch(error){
                 setError(error)
@@ -74,14 +75,12 @@ function Fetch() {
 
 function Post(){
     const [post, loading, error] = Fetch()
-    console.log(post, loading, error)
     return(
         <>
         <Container className='border shadow p-5'>
             {loading ? <h2>Loading...</h2>:
                 <Container>
                     <Display imageArr={post.images}/>
-                    {console.log(post.images)}
                     <Placeholder/>
                     <h2>{post.title}</h2>
                     {post.urgent === 'true' ? <div className='text-danger fst-italic mb-3' style={{fontSize:"0.8rem"}}>*緊急</div>:<></>}
@@ -102,27 +101,34 @@ function Post(){
 export default Post
 
 function Display(props){
-
+    const car = (array)=>{
+        let arr = [];
+        array.map((data,idx)=>{
+        arr.push(
+        <Carousel.Item>
+        <img
+            className="d-block w-100 caroimg"
+            src={data['imageSrc']}
+            alt={idx}
+        />
+        {data['description']
+        ?
+            <Carousel.Caption className='d-flex position-absolute bottom-0 start-50 translate-middle-x mb-5 d-block w-100 bg-dark text-light justify-content-center bg-opacity-50 align-items-center'>
+                <p className='opacity-100'>{data['description']}</p>
+            </Carousel.Caption>
+        :<></>
+        }
+        </Carousel.Item>
+        );
+    })
+        return arr
+    }
     return (
         <>
         {props.imageArr.length === 0 
             ? <></>
             : <Carousel className='rounded border border-dark w-100 h-100 shadow-sm' variant='dark'>
-                {props.imageArr.map((data,idx)=>
-                <Carousel.Item>
-                <img
-                    className="d-block w-100 caroimg"
-                    src={data['imageSrc']}
-                    alt={idx}
-                />
-                {data['description']
-                ?
-                <Carousel.Caption className='d-flex position-absolute bottom-0 start-50 translate-middle-x mb-5 d-block w-100 bg-dark text-light justify-content-center bg-opacity-50 align-items-center'>
-                    <p className='opacity-100'>{data['description']}</p>
-                </Carousel.Caption>
-                :<></>}
-                </Carousel.Item>
-                )}
+                {car(props.imageArr)}
             </Carousel>
         }
         </>

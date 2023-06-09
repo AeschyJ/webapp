@@ -250,7 +250,6 @@ def get_photo(id):
 
 
 def get_photo_by_post(postId, num=0):
-    photo = {}
     photos = []
     try:
         conn = connect_to_db()
@@ -260,17 +259,18 @@ def get_photo_by_post(postId, num=0):
             cur.execute("SELECT imagePath FROM photos WHERE postId = ? LIMIT 1",
                         (postId, ))
             row = cur.fetchone()
-            # print(row)
             return return_img_stream(os.path.join(BASE_DIR, row[0]))
         
         else:
             cur.execute("SELECT * FROM photos WHERE postId = ?",
                         (postId, ))
             row = cur.fetchall()
-        for p in row:
-            photo["imageSrc"] = return_img_stream(os.path.join(BASE_DIR, p[2]))
-            photo["description"] = p[3]
-            photos.append(photo)
+            for p in row:
+                photo = {}
+                photo["imageSrc"] = return_img_stream(os.path.join(BASE_DIR, p[2]))
+                photo["description"] = p[3]
+                photo["postId"] = postId
+                photos.append(photo)
 
     except Exception as e:
         print(e)
