@@ -26,7 +26,6 @@ import Cat from "./img/QGCat/cat.jpg";
 import Dog from "./img/QGdog/dog.png";
 import Bird from "./img/QGbird/bird.jpg";
 import Donate from "./img/donate.jpg"
-import axios from 'axios';
 
 
 function HomePage(){
@@ -352,9 +351,9 @@ function ExperienceCard(props){
                 <Card.Body>
                     <Card.Title className='d-inline-flex align-items-center'>
                         {data.title.length > 10 ? `${data.title.slice(0,10)}...`: data.title}
-                        {data.urgent === 'true' ? <div className='text-danger fst-italic mx-3' style={{fontSize:"12px"}}>*緊急</div>:<div className=''></div>}
+                        {data.urgent === 'true' ? <div className='text-danger fst-italic mx-3' style={{fontSize:"0.8rem"}}>*緊急</div>:<></>}
                     </Card.Title>
-                    <Card.Text>{data.content.length > 50 ? `${data.content.slice(0,50)}...`: data.content}</Card.Text>
+                    <Card.Text className='fs-6'>{data.content.length > 50 ? `${data.content.slice(0,50)}...`: data.content}</Card.Text>
                 </Card.Body>
                 <ListGroup className="list-group-flush">
                     <ListGroup.Item>
@@ -362,7 +361,7 @@ function ExperienceCard(props){
                             <Button variant="outline-secondary">全文</Button>
                         </LinkContainer>
                     </ListGroup.Item>
-                    <ListGroup.Item>{format(new Date(data.updateDate), "yyyy-MM-dd")}</ListGroup.Item>
+                    <ListGroup.Item className='text-secondary fs-6'>{format(new Date(data.updateDate), "yyyy-MM-dd")}</ListGroup.Item>
                 </ListGroup>
                 </Card>
             </Col>
