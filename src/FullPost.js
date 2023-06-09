@@ -27,7 +27,6 @@ function Fetch() {
             try{
                 const url = apis.posts + `/${param.id}`
                 const response = await axios.get(url)
-                console.log('res',response.data)
                 setPost(response.data.data)
             }catch(error){
                 setError(error)
