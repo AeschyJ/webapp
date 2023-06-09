@@ -282,6 +282,7 @@ def get_photo_by_post(postId, num=0):
 
 def insert_photo(photo, postId, description):
     img = {}
+    print(description)
     try:
         conn = connect_to_db()
         cur = conn.cursor()
