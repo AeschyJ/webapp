@@ -11,12 +11,14 @@
 
 3. **用戶認證**: 該應用程序支持用戶註冊和身份驗證，允許用戶創建帳戶並登錄以訪問帖子功能。
 
+
 ## 使用的技術
 - 前端框架：React
 - 外型套件：React-Bootstrap
 - 後端框架：flask、flask_restful
 - 登入套件：flask_jwt
 - 資料庫：SQLite
+
 
 ## 安裝 
 要在本地安裝和運行該應用程序，請按照以下步驟操作：
@@ -60,8 +62,10 @@
    python3 app.py
    ```
 
+
 ## 支持的顯示
 任何屏幕尺寸
+
 
 ## 參考資料
 - 遇到犬貓車禍怎麼辦?黃金五步驟即時救毛孩(全國動物醫院) ：https://www.vet.com.tw/news/knowledge-car-accident-0126 
