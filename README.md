@@ -5,11 +5,11 @@
 
 ## 功能
 
-1. **傷救指引**: 針對受傷或狀況不明的動物給予需要的處置建議。使用者可以視動物的狀況填寫表單即能得到指南，以及適合的動物醫院或動物收容所。
+1. **傷救指引**: 針對受傷或狀況不明的動物給予處置建議。使用者可以視動物的狀況填寫表單即能得到指南以及適合的動物醫院或動物收容所。
 
-2. **貼文功能**: 旨在供用戶發布與動物相關的問題、新聞等。可上傳圖片。
+2. **貼文功能**: 旨在供使用者分享關於動物的處理經驗文章與照片。
 
-3. **用戶認證**: 該應用程序支持用戶註冊和身份驗證，允許用戶創建帳戶並登錄以訪問帖子功能。
+3. **會員服務**: 此網站提供使用者註冊與登入的功能，允許會員在登入的情況下貼文。
 
 
 ## 使用的技術
@@ -20,54 +20,42 @@
 - 資料庫：SQLite
 
 
-## 安裝 
-要在本地安裝和運行該應用程序，請按照以下步驟操作：
+## 安裝與執行 
+要安裝和執行此網站，請按照以下步驟操作：
 
-1. 將存儲庫克隆到本地計算機：
-   ```
+1. Clone the repository to your local machine:   
    git clone https://github.com/AeschyJ/webapp.git
-   ```
-
-2. 導航到項目目錄：
-   ```
-   cd User/username/path/to/webapp
-   ```
-
-### 激活前端
-3. 使用 npm 或 yarn 安裝依賴項：
-   ```
+   
+2. Navigate to the project directory:
+   cd /Users/username/path/to/webapp
+   
+### Start the front-end
+3. Install the dependencies using npm or yarn:
    npm install
-   ```
-
-4. 啟動開發服務器：
-   ```
+   
+4. Start the development server:
    npm start
-   ```
+   
+5. Open your web browser and visit http://localhost:3000 to access the app.
 
-5. 打開您的網絡瀏覽器並訪問 http://localhost:3000 以訪問該應用程序。
-
-### 開啟後端
-6. 激活虛擬環境：
-   ```
-   source User/username/path/to/webapp/Backend/venv/bin/activate
-   ```
-
-7. 安裝 flask:
-   ```
-   pip install flask flask-cors flask-SQLAlchemy
-   ```
-
-8. 開始:
-   ```
+### Run the back-end
+6. Install and activate virtual environment:
+   sudo pip3 install virtualenv
+   virtualenv venv 
+   source /Users/username/path/to/webapp/Backend/venv/bin/activate
+   
+7. Install flask:
+   python -m pip install flask flask_restful flask_cors flask-SQLAlchemy flask_jwt_extended
+   
+8. Run:
    python3 app.py
-   ```
 
 
-## 支持的顯示
-任何屏幕尺寸
+## 支持的顯示器
+任何尺寸的螢幕
 
 
-## 參考資料
+## 議題參考資料
 - 遇到犬貓車禍怎麼辦?黃金五步驟即時救毛孩(全國動物醫院) ：https://www.vet.com.tw/news/knowledge-car-accident-0126 
 - 我發現有遊蕩在外動物受傷受困，該怎麼辦?(台北市動物保護處)： https://www.tcapo.gov.taipei/News_Content.aspx?n=10457D24D71EC09E&s=F1B 68E7E6DE5BC13 
 - 遇到受傷的流浪貓狗，沒經驗的你可以如何處理?(汪喵知識教室) ：https://www.dogcatstar.com/blog_straydogcat/ 
