@@ -23,33 +23,40 @@
 ## 安裝與執行 
 要安裝和執行此網站，請按照以下步驟操作：
 
-1. Clone the repository to your local machine:   
+1. Clone the repository to your local machine:
+   ```
    git clone https://github.com/AeschyJ/webapp.git
-   
+   ```
 2. Navigate to the project directory:
+   ```
    cd /Users/username/path/to/webapp
-   
+   ```
 ### Start the front-end
 3. Install the dependencies using npm or yarn:
+   ```
    npm install
-   
+   ```
 4. Start the development server:
+   ```
    npm start
-   
+   ```
 5. Open your web browser and visit http://localhost:3000 to access the app.
 
 ### Run the back-end
 6. Install and activate virtual environment:
+   ```
    sudo pip3 install virtualenv
    virtualenv venv 
    source /Users/username/path/to/webapp/Backend/venv/bin/activate
-   
+   ```
 7. Install flask:
+   ```
    python -m pip install flask flask_restful flask_cors flask-SQLAlchemy flask_jwt_extended
-   
+   ```
 8. Run:
+   ```
    python3 app.py
-
+   ```
 
 ## 支持的顯示器
 任何尺寸的螢幕
