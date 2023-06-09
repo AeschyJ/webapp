@@ -43,7 +43,11 @@
 5. Open your web browser and visit http://localhost:3000 to access the app.
 
 ### Run the back-end
-6. Install and activate virtual environment:
+6. Navigate to the back-end folder:
+   ```
+   cd /Users/username/path/to/webapp/Backend
+   ```
+7. Install and activate virtual environment:
    ```
    sudo pip3 install virtualenv
    virtualenv venv 
